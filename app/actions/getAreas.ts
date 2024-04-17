@@ -33,7 +33,7 @@ AND e.deleted_at IS NULL
 AND u.deleted_at IS NULL
 `
 
-export async function getAreas(): Promise<Area[]> {
+export async function getDbData(): Promise<Area[]> {
   try {
     const [ rows ] = await pool.query<RowDataPacket[]>(query)
     return rows.map((row) => {
@@ -56,17 +56,17 @@ export async function getAreas(): Promise<Area[]> {
   }
 }
 
-export async function getLastHits(): Promise<{ area_id: number, timestamp: string }> {
+export async function getLastHits( areas_ids: number[] ): Promise<{ area_id: number, timestamp_bsb: string }[]> {
   try {
     const { body } = await os_client.search({
-      index: 'bioembeddings_t2',
+      index: 'bioembeddings',
       body: {
-        size: 0,
+        size: areas_ids.length,
         query: {
           bool: {
             filter: {
               terms: {
-                area_id: [572]
+                area_id: areas_ids
               }
             }
           }
@@ -75,7 +75,7 @@ export async function getLastHits(): Promise<{ area_id: number, timestamp: strin
           areas: {
             terms: {
               field: 'area_id',
-              size: 1,
+              size: areas_ids.length,
               order: { latest_timestamp: 'desc' }
             },
             aggs: {
@@ -85,7 +85,7 @@ export async function getLastHits(): Promise<{ area_id: number, timestamp: strin
                   size: 1,
                   sort: [{ timestamp: { order: 'desc' } }],
                   _source: {
-                    includes: ['area_id', 'timestamp']
+                    includes: ['area_id', 'timestamp_bsb']
                   }
                 }
               }
@@ -97,13 +97,37 @@ export async function getLastHits(): Promise<{ area_id: number, timestamp: strin
     
     const buckets = body["aggregations"]["areas"]["buckets"]
     
-    return {
-       area_id: buckets[0]["key"],
-      timestamp: buckets[0]["latest_timestamp"]["value_as_string"]
+    return buckets.map((bucket: any) => {
+      const latest_record = bucket["latest_record"]["hits"]["hits"][0]
+      return {
+        area_id: Number(bucket["key"]),
+        timestamp_bsb: latest_record["_source"]["timestamp_bsb"]
+      }
     }
+    )
 
   } catch (error) {
     console.error('Erro ao obter hits:', error);
     throw error
   }
 }
+
+export async function getAreas() {
+  const areas = await getDbData()
+  const areas_ids = areas.map((area) => area.area_id)
+  const hits = await getLastHits(areas_ids as number[])
+
+  return areas.map((area) => {
+    const hit = hits.find((hit) => hit.area_id === area.area_id)
+    return {
+      area_id: area.area_id,
+      area_nome: area.area_nome,
+      camera_id: area.camera_id,
+      unidade_nome: area.unidade_nome,
+      empresa_nome: area.empresa_nome,
+      timestamp_bsb: hit?.timestamp_bsb,
+    }
+  }
+  )
+}
+  

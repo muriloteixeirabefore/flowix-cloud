@@ -26,29 +26,26 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+import { integer } from "@opensearch-project/opensearch/api/types"
 import { useQuery } from "@tanstack/react-query"
 import { Settings2 } from "lucide-react"
 import { useState } from "react"
 import { getAreas } from "../actions/getAreas"
-import { integer } from "@opensearch-project/opensearch/api/types"
 
 interface Data {
   area_id?: number
   area_nome?: string
   camera_id?: number
-  camera_nome?: string
-  ip_maquina?: string
-  camera_status?: string
-  camera_created_at?: string
   empresa_nome?: string
   unidade_nome?: string
+  timestamp_bsb?: string
 }
 
 export const columns: ColumnDef<Data>[] = [
   {
     accessorKey: "area_id",
     header: ({ column }) => (
-      <DataTableColumnHeaderSort column={column} title="Area Id" />
+      <DataTableColumnHeaderSort column={column} title="ID" />
     ),
     cell: ({ row }) => <div>{row.getValue("area_id")}</div>,
   },
@@ -60,24 +57,9 @@ export const columns: ColumnDef<Data>[] = [
   {
     accessorKey: "camera_id",
     header: ({ column }) => (
-      <DataTableColumnHeaderSort column={column} title="Camera Id" />
+      <DataTableColumnHeaderSort column={column} title="Cam ID" />
     ),
     cell: ({ row }) => <div>{row.getValue("camera_id")}</div>,
-  },
-  {
-    accessorKey: "camera_nome",
-    header: "Camera",
-    cell: ({ row }) => <div>{row.getValue("camera_nome")}</div>,
-  },
-  {
-    accessorKey: "ip_maquina",
-    header: "IP Maquina",
-    cell: ({ row }) => <div>{row.getValue("ip_maquina")}</div>,
-  },
-  {
-    accessorKey: "camera_status",
-    header: "Camera Status",
-    cell: ({ row }) => <div>{row.getValue("camera_status")}</div>,
   },
   {
     accessorKey: "unidade_nome",
@@ -89,6 +71,47 @@ export const columns: ColumnDef<Data>[] = [
     header: "Empresa",
     cell: ({ row }) => <div>{row.getValue("empresa_nome")}</div>
   },
+  {
+    accessorKey: "timestamp_bsb",
+    header: ({ column }) => (
+      <DataTableColumnHeaderSort column={column} title="Último registro (BSB)" />
+    ),
+    cell: ({ row }) => {
+      if (!row.getValue("timestamp_bsb")) {
+        return <div>Indefinido</div>
+      }
+
+      return (
+        <div>
+          {new Date(row.getValue("timestamp_bsb")).toLocaleString('pt-BR')}
+        </div>
+      );
+    },
+  },
+  {
+    accessorKey: "status",
+    header: "Status",
+    cell: ({ row }) => {
+      if (!row.getValue("timestamp_bsb")) {
+        return <div>Indefinido</div>
+      }
+
+      const lastHit = new Date(row.getValue("timestamp_bsb"))
+      const now = new Date()
+      const diff = now.getTime() - lastHit.getTime()
+      const diffInMinutes = diff / 1000 / 60
+
+      if (now.getDate() !== lastHit.getDate()) {
+        return <div className="text-red-500">Sem registro no dia</div>
+      } else if (diffInMinutes < 30) {
+        return <div className="text-green-500">Inferior a 30 minutos</div>
+      } else if (diffInMinutes >= 30) {
+        return <div className="text-yellow-500">Superior a 30 minutos</div>
+      } else {
+        return <div>Erro</div>
+      }
+    }
+  },
 ]
 
 export default function DataTableDemo() {
@@ -98,36 +121,27 @@ export default function DataTableDemo() {
     initialData: [
       {
         area_id: 1,
-        area_nome: "Area 1",
+        area_nome: "Foo",
         camera_id: 1,
-        camera_nome: "Camera 1",
-        ip_maquina: "123456",
-        camera_status: "online",
-        camera_created_at: "2021-09-01",
-        empresa_nome: "Empresa 1",
-        unidade_nome: "Unidade 1",
+        empresa_nome: "Bar",
+        unidade_nome: "Baz",
+        timestamp_bsb: "2021-09-01",
       },
       {
         area_id: 2,
-        area_nome: "Area 2",
+        area_nome: "Bar",
         camera_id: 2,
-        camera_nome: "Camera 2",
-        ip_maquina: "123456",
-        camera_status: "offline",
-        camera_created_at: "2021-09-01",
-        empresa_nome: "Empresa 2",
-        unidade_nome: "Unidade 2",
+        empresa_nome: "Foo",
+        unidade_nome: "Baz",
+        timestamp_bsb: "2021-09-02",
       },
       {
         area_id: 3,
-        area_nome: "Area 3",
+        area_nome: "Baz",
         camera_id: 3,
-        camera_nome: "Camera 3",
-        ip_maquina: "123456",
-        camera_status: "offline",
-        camera_created_at: "2021-09-01",
-        empresa_nome: "Empresa 3",
-        unidade_nome: "Unidade 3",
+        empresa_nome: "Foo",
+        unidade_nome: "Bar",
+        timestamp_bsb: "2021-09-03",
       },
     ],
   })
@@ -160,7 +174,10 @@ export default function DataTableDemo() {
   })
 
   return (
-    <div className="w-auto mx-80">
+    <div className="w-auto mx-40">
+      <div className="flex items-center justify-center py-8">
+        <h1 className="text-2xl font-bold">Áreas</h1>
+      </div>
       <div className="flex items-center py-4">
         <div className="flex items-center space-x-2">
           <Input
@@ -265,7 +282,8 @@ export default function DataTableDemo() {
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow
-                  key={row.id}
+                  // Adiciona cores intercaladas para índices pares e ímpares
+                  className={row.index % 2 === 0 ? "bg-white hover:bg-zinc-300" : "bg-zinc-100 hover:bg-zinc-300"}
                   data-state={row.getIsSelected() && "selected"}
                 >
                   {row.getVisibleCells().map((cell) => (
