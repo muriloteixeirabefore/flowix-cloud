@@ -119,7 +119,7 @@ export async function getAreas() {
 
   return areas.map((area) => {
     const hit = hits.find((hit) => hit.area_id === area.area_id)
-    return {
+    return {  
       area_id: area.area_id,
       area_nome: area.area_nome,
       camera_id: area.camera_id,
