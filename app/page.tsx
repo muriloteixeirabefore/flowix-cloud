@@ -1,8 +1,8 @@
 "use client"
 
+import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { getRepositoryTags } from "./actions/getDockerImages";
-import { Button } from "@/components/ui/button";
 
 export default function Home() {
   return (
@@ -18,6 +18,9 @@ export default function Home() {
         </Link>
         <Link className="text-blue-500" href="/ofertas">
           Ofertas
+        </Link>
+        <Link className="text-blue-500" href="/instancias">
+          Instâncias
         </Link>
       </div>
       <Button onClick={() => getRepositoryTags()}>Get Docker Images</Button>
