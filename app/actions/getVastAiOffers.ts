@@ -1,7 +1,7 @@
 // Server Action
 'use server'
 
-import { vastAiApi } from '@/lib/axios';
+import { vastAiApi } from '@/lib/axios';    
 
 const DAY_HOURS = 16
 

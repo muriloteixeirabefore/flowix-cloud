@@ -1,8 +1,6 @@
 "use client"
 
 import Link from "next/link";
-import { getRepositoryTags } from "./actions/getDockerImages";
-import { Button } from "@/components/ui/button";
 
 export default function Home() {
   return (
@@ -20,7 +18,6 @@ export default function Home() {
           Ofertas
         </Link>
       </div>
-      <Button onClick={() => getRepositoryTags()}>Get Docker Images</Button>
     </main>
   )
 }
