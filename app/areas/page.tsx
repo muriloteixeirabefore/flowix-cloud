@@ -13,8 +13,8 @@ import {
   useReactTable,
 } from "@tanstack/react-table"
 
-import { DataTableColumnHeaderSort } from "@/components/data-table-column-header-sort"
-import { DataTableFacetedFilter } from "@/components/data-table-faceted-filter"
+import { DataTableColumnHeaderSort } from "@/components/data-table/column-header-sort"
+import { DataTableFacetedFilter } from "@/components/data-table/faceted-filter"
 import { Button } from "@/components/ui/button"
 import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Input } from "@/components/ui/input"
@@ -117,7 +117,7 @@ export const columns: ColumnDef<Data>[] = [
 export default function DataTableDemo() {
   const { data } = useQuery({
     queryKey: ['responses'],
-    queryFn: () => getAreas(),  
+    queryFn: () => getAreas(),
     initialData: [
       {
         area_id: 1,
@@ -147,11 +147,8 @@ export default function DataTableDemo() {
   })
 
   const [sorting, setSorting] = useState<SortingState>([])
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(
-    []
-  )
-  const [columnVisibility, setColumnVisibility] =
-    useState<VisibilityState>({})
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
+  const [columnVisibility, setColumnVisibility] =useState<VisibilityState>({})
   const [rowSelection, setRowSelection] = useState({})
 
   const table = useReactTable({

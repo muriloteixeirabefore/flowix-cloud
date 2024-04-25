@@ -1,6 +1,6 @@
 "use server"
 
-import { api } from '@/lib/axios'
+import { flowixApi } from '@/lib/axios'
 
 export interface getFusosResponse {
     fusos: {
@@ -11,6 +11,6 @@ export interface getFusosResponse {
 }
 
 export async function getFusos(): Promise<getFusosResponse> {
-    const reponse = await api.get<getFusosResponse>('/utils/geo/fusos')
+    const reponse = await flowixApi.get<getFusosResponse>('/utils/geo/fusos')
     return reponse.data
 }
