@@ -1,3 +1,4 @@
+import { getDockerToken } from '@/app/actions/docker'
 import { env } from '@/env'
 import axios from 'axios'
 
@@ -29,19 +30,17 @@ vastAiApi.interceptors.request.use(x => {
 
 export const dockerApi = axios.create({
   baseURL: 'https://hub.docker.com/v2',
-  headers: {
-    Authorization: `Bearer blablabla`,
-    Accept: 'application/json',
-  }
 })
 
 dockerApi.interceptors.response.use(x => {
   return x
-}, error => {
+}, async error => {
   const { response, config } = error
-  if (response.status === 401) {
-    console.log('Docker API Unauthorized')
-  }
+  if ([401, 404].includes(response.status)) {
+    const token = await getDockerToken()
+    config.headers['Authorization'] = `Bearer ${token}`
+    return await axios.request(config) 
+  } 
   return Promise.reject(error)
 }
 )

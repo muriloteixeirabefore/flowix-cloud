@@ -5,6 +5,8 @@ import { getVastAiOffers } from "@/app/actions/getVastAiOffers"
 import { columns, OfferData } from "./columns" 
 import { DataTable } from "@/components/data-table/data-table"
 import { H4 } from '@/components/ui/h4'
+import { getDockerRepositoryTags } from '../actions/docker'
+
 
 export default function OfertasPage() {
   const { 
@@ -12,6 +14,12 @@ export default function OfertasPage() {
   } = useQuery({
     queryKey: ['ofertas'],
     queryFn: () => getVastAiOffers(),
+    initialData: [],
+  })
+
+  const { data: docker_tags } = useQuery({
+    queryKey: ['docker_tags'],
+    queryFn: () => getDockerRepositoryTags(),
     initialData: [],
   })
 
@@ -29,6 +37,8 @@ export default function OfertasPage() {
       reliability: (offer.reliability * 100).toFixed(2) + '%',
       public_ipaddr: offer.public_ipaddr,
       geolocation: offer.geolocation,
+      docker_tags: docker_tags,
+      comand: "screen -dmS SESSION; screen -S SESSION -X stuff 'python3 /Flowix/FlowixStart.py --cameras {{ offer['fwx_cameras'] }} &\n'"
     }
   })
 

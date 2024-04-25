@@ -1,8 +1,7 @@
 import { DataTableColumnHeaderSort } from "@/components/data-table/column-header-sort"
-import { Button } from "@/components/ui/button"
 import { ColumnDef } from "@tanstack/react-table"
-import { CircleDollarSign, EyeIcon } from "lucide-react"
-import { ReserveDialog } from "./ReserveDialog"
+import { ReserveDialog } from "./reserve-dialog"
+//import { getDockerRepositoryTags } from "../actions/docker"
 
 export interface OfferData {
   gpu_data: string
@@ -17,6 +16,8 @@ export interface OfferData {
   reliability: string
   public_ipaddr: string
   geolocation: string
+  docker_tags?: string[]
+  comand: string
 }
 
 export const columns: ColumnDef<OfferData>[] = [
@@ -31,7 +32,7 @@ export const columns: ColumnDef<OfferData>[] = [
   {
     accessorKey: "max_cameras",
     header: ({ column }) => (
-    <DataTableColumnHeaderSort column={column} title="MaxCams" />
+      <DataTableColumnHeaderSort column={column} title="MaxCams" />
     ),
   },
   {
@@ -83,6 +84,11 @@ export const columns: ColumnDef<OfferData>[] = [
   {
     accessorKey: "action",
     header: "",
-    cell: () => (<ReserveDialog />)
+    cell: ({ row }) => (
+      <ReserveDialog
+        max_cameras={row.original["max_cameras"]}
+        docker_tags={row.original["docker_tags"]}
+      />
+    ),
   },
 ]
