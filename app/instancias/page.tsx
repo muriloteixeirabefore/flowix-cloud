@@ -11,11 +11,13 @@ import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 
 import {
-    Tooltip,
-    TooltipContent,
-    TooltipProvider,
-    TooltipTrigger,
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { toast } from 'sonner';
+
   
 
 
@@ -52,7 +54,7 @@ export default function InstancePage() {
             instances && instances.map((instance: any) => (
               <TableRow key={instance.id}>
                 <TableCell>
-                <Link href={`/instances/${instance.id}`}>
+                <Link href={`/instancias/${instance.id}`}>
                 <Button variant="ghost" className="flex flex-row items-center">
                     {instance.label} <OpenInNewWindowIcon className="ml-2 h-4 w-4" />
                 </Button>
@@ -67,6 +69,8 @@ export default function InstancePage() {
                 <TableCell>
                 <Button variant="ghost" onClick={() => {
                     navigator.clipboard.writeText(instance.ip);
+
+                    toast.success('IP copiado para a área de transferência')
                 }}>{instance.ip} <CopyIcon className="ml-2 h-4 w-4" /></Button>
                 </TableCell>
                 <TableCell>{instance.location}</TableCell>
