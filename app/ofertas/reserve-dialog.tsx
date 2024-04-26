@@ -3,22 +3,21 @@
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger
+  DialogTrigger,
 } from "@/components/ui/dialog";
-import { FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form";
+import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { DialogClose } from "@radix-ui/react-dialog";
 import { CircleDollarSign } from "lucide-react";
-import { useState } from "react";
-import { Form, useForm } from "react-hook-form";
+import { useEffect } from "react";
+import { useForm, useWatch } from "react-hook-form";
 import { z } from 'zod';
 import { get_machine_label } from "../utils";
 
@@ -35,6 +34,10 @@ const reserveFormSchema = z.object({
 });
 
 export function ReserveDialog({ max_cameras, docker_tags }: ReserveDialogProps) {
+  function onSubmitHandler(values: z.infer<typeof reserveFormSchema>) {
+    console.log(values)
+  }
+  
   const form = useForm({
     resolver: zodResolver(reserveFormSchema),
     defaultValues: {
@@ -45,23 +48,14 @@ export function ReserveDialog({ max_cameras, docker_tags }: ReserveDialogProps) 
     }
   });
 
-  function onSubmitHandler(values: z.infer<typeof reserveFormSchema>) {
-    console.log(values);
-  }
-
-
-  const [cameras, setCameras] = useState(max_cameras);
-  const [command, setCommand] = useState(
-    `screen -dmS SESSION; screen -S SESSION -X stuff 'python3 /Flowix/FlowixStart.py --cameras ${max_cameras} &\\n'`
-  );
-
-  const handleCameraChange = (event: any) => {
-    const newCameras = event.target.value;
-    setCameras(newCameras);
-    setCommand(
-      `screen -dmS SESSION; screen -S SESSION -X stuff 'python3 /Flowix/FlowixStart.py --cameras ${newCameras} &\\n'`
-    );
-  };
+  const qtd_cameras = useWatch({ control: form.control, name: 'qtd_cameras' });
+  useEffect(() => {
+    const updateCommand = (cameras: number) => {
+      const newCommand = `screen -dmS SESSION; screen -S SESSION -X stuff 'python3 /Flowix/FlowixStart.py --cameras ${cameras} &\\n'`;
+      form.setValue('command', newCommand);
+    };
+    updateCommand(qtd_cameras);
+  }, [qtd_cameras, form])
 
   return (
     <Dialog>
@@ -77,96 +71,100 @@ export function ReserveDialog({ max_cameras, docker_tags }: ReserveDialogProps) 
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmitHandler)}>
-            <FormField
-              control={form.control}
-              name="machine_name"
-              render={({ field }) => (
-                <FormItem>
-                  <div className="grid grid-cols-4 items-center gap-4">
-                    <FormLabel htmlFor="machine-name" className="text-right">
-                      Nome da máquina
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        id="machine-name"
-                        {...field}
-                        className="col-span-3"
-                      />
-                    </FormControl>
-                  </div>
-                </FormItem>
-              )}
-            />
-            {/* <div className="grid gap-4 py-4">
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="machine-name" className="text-right">
-                  Nome da máquina
-                </Label>
-                <Input
-                  id="machine-name"
-                  defaultValue={get_machine_label()}
-                  className="col-span-3"
-                />
-              </div>
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="docker-image" className="text-right">
-                  Imagem Docker
-                </Label>
-                <Select
-                  value=""
-                  onValueChange={(value: any) => {
-                    //console.log(value)
-                  }}
-                >
-                  <SelectTrigger className="col-span-3">
-                    <SelectValue placeholder="Selecione uma imagem" />
-                  </SelectTrigger>
-                  <SelectContent side="top">
-                    {docker_tags?.map((image) => (
-                      <SelectItem key={image} value={`${image}`}>
-                        {image}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="qtd-cameras" className="text-right">
-                  Quantidade de câmeras
-                </Label>
-                <Input
-                  id="qtd-cameras"
-                  value={cameras}
-                  type="number"
-                  onChange={handleCameraChange}
-                  className="col-span-3"
-                />
-              </div>
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="command" className="text-right">
-                  Comando
-                </Label>
-                <Textarea
-                  placeholder="Comando para iniciar o container"
-                  className="col-span-3"
-                  value={command}
-                  onChange={(event) => setCommand(event.target.value)}
-                />
-              </div>
-            </div> */}
+            <div className="grid gap-4 py-4">
+              <FormField
+                control={form.control}
+                name="machine_name"
+                render={({ field }) => (
+                  <FormItem>
+                    <div className="grid grid-cols-4 items-center gap-4">
+                      <FormLabel htmlFor="machine-name" className="text-right">
+                        Nome da máquina
+                      </FormLabel>
+                      <FormControl>
+                        <Input className="col-span-3" {...field} />
+                      </FormControl>
+                    </div>
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="docker_image"
+                render={({ field }) => (
+                  <FormItem>
+                    <div className="grid grid-cols-4 items-center gap-4">
+                      <FormLabel htmlFor="docker-image" className="text-right">
+                        Imagem Docker
+                      </FormLabel>
+                      <Select onValueChange={field.onChange} value={field.value}>
+                        <FormControl>
+                          <SelectTrigger className="col-span-3">
+                            <SelectValue placeholder="Selecione uma imagem" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {docker_tags?.map((image) => (
+                            <SelectItem key={image} value={`${image}`}>
+                              {image}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="qtd_cameras"
+                render={({ field }) => (
+                  <FormItem>
+                    <div className="grid grid-cols-4 items-center gap-4">
+                      <FormLabel htmlFor="qtd-cameras" className="text-right">
+                        Quantidade de câmeras
+                      </FormLabel>
+                      <FormControl>
+                        <Input type="number" className="col-span-3" {...field} />
+                      </FormControl>
+                    </div>
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="command"
+                render={({ field }) => (
+                  <FormItem>
+                    <div className="grid grid-cols-4 items-center gap-4">
+                      <FormLabel htmlFor="command" className="text-right">
+                        Comando
+                      </FormLabel>
+                      <FormControl>
+                        <Textarea
+                          placeholder="Comando para iniciar o container"
+                          className="col-span-3"
+                          {...field}
+                        />
+                      </FormControl>
+                    </div>
+                  </FormItem>
+                )}
+              />
+            </div>
+            <DialogFooter>
+              <DialogClose asChild>
+                <Button className="bg-red-500 hover:bg-red-700 text-white shadow-md rounded-md space-x-1">
+                  Cancelar
+                </Button>
+              </DialogClose>
+              <Button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white shadow-md rounded-md space-x-1">
+                <CircleDollarSign className="w-4 h-4" />
+                <span>Reservar</span>
+              </Button>
+            </DialogFooter>
           </form>
         </Form>
-        <DialogFooter>
-          <DialogClose asChild>
-            <Button className="bg-red-500 hover:bg-red-700 text-white shadow-md rounded-md space-x-1">
-              Cancelar
-            </Button>
-          </DialogClose>
-          <Button className="bg-blue-500 hover:bg-blue-700 text-white shadow-md rounded-md space-x-1">
-            <CircleDollarSign className="w-4 h-4" />
-            <span>Reservar</span>
-          </Button>
-        </DialogFooter>
       </DialogContent>
     </Dialog>
   );
