@@ -37,8 +37,8 @@ export default function OfertasPage() {
       reliability: (offer.reliability * 100).toFixed(2) + '%',
       public_ipaddr: offer.public_ipaddr,
       geolocation: offer.geolocation,
-      docker_tags: docker_tags,
-      comand: "screen -dmS SESSION; screen -S SESSION -X stuff 'python3 /Flowix/FlowixStart.py --cameras {{ offer['fwx_cameras'] }} &\n'"
+      docker_tags: docker_tags.map((tag: string) => "flowix/ml:" + tag),
+      offer_id: offer.id,
     }
   })
 

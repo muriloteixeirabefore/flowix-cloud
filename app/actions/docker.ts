@@ -4,7 +4,6 @@ import { env } from '@/env';
 import { dockerApi } from '@/lib/axios';
 
 
-
 export async function getDockerToken() {
     const response = await dockerApi.post('/users/login', {
         username: env.DOCKER_USERNAME,
@@ -12,7 +11,6 @@ export async function getDockerToken() {
     })
     return response.data.token
 }
-
 
 
 export async function getDockerRepositoryTags() {

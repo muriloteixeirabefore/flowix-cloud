@@ -12,7 +12,6 @@ export const vastAiApi = axios.create({
   baseURL: env.VASTAI_URL,
   headers: {
     Authorization: `Bearer ${env.VASTAI_TOKEN}`,
-    Accept: 'application/json',
   }
 })
 

@@ -18,6 +18,7 @@ export interface OfferData {
   geolocation: string
   docker_tags?: string[]
   comand: string
+  offer_id: string
 }
 
 export const columns: ColumnDef<OfferData>[] = [
@@ -86,8 +87,9 @@ export const columns: ColumnDef<OfferData>[] = [
     header: "",
     cell: ({ row }) => (
       <ReserveDialog
-        max_cameras={row.original["max_cameras"]}
+        qtd_cameras={row.original["max_cameras"]}
         docker_tags={row.original["docker_tags"]}
+        offer_id={row.original["offer_id"]}
       />
     ),
   },

@@ -3,6 +3,7 @@
 
 import { vastAiApi } from '@/lib/axios';    
 
+
 const DAY_HOURS = 16
 
 function calculate_max_cameras(offer: any) {
@@ -39,6 +40,7 @@ export async function getVastAiOffers() {
         const cost_per_hour = cost_per_camera_hour * max_cameras
 
         return {
+            id: offer.id,
             gpu_name: offer.gpu_name,
             gpu_ram: Math.round(offer.gpu_ram / 1024),
             qtd_gpus: offer.gpu_ids.length,
