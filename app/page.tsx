@@ -17,6 +17,9 @@ export default function Home() {
         <Link className="text-blue-500" href="/ofertas">
           Ofertas
         </Link>
+        <Link className="text-blue-500" href="/instancias">
+          Instâncias
+        </Link>
       </div>
     </main>
   )
