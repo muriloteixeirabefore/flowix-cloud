@@ -24,7 +24,7 @@ import { toast } from 'sonner';
 export default function InstancePage() {
     // useQuery to getInstances
     const { data: instances } = useQuery({
-        queryKey: "instances", // "instances" is a unique identifier for this query
+        queryKey: ["instances"], // "instances" is a unique identifier for this query
         queryFn: () => getInstances(),
         refetchInterval: 1000 * 5, // refetch every 5 seconds
     })
