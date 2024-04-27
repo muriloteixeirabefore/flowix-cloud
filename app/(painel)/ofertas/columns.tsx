@@ -1,7 +1,7 @@
-import { DataTableColumnHeaderSort } from "@/components/data-table/column-header-sort"
-import { ColumnDef } from "@tanstack/react-table"
-import { ReserveDialog } from "./reserve-dialog"
-//import { getDockerRepositoryTags } from "../actions/docker"
+import { DataTableColumnHeaderSort } from '@/components/data-table/column-header-sort'
+import { ColumnDef } from '@tanstack/react-table'
+import { ReserveDialog } from './reserve-dialog'
+// import { getDockerRepositoryTags } from "../actions/docker"
 
 export interface OfferData {
   gpu_data: string
@@ -23,73 +23,73 @@ export interface OfferData {
 
 export const columns: ColumnDef<OfferData>[] = [
   {
-    accessorKey: "gpu_data",
-    header: "GPU",
+    accessorKey: 'gpu_data',
+    header: 'GPU',
   },
   {
-    accessorKey: "cpu_data",
-    header: "CPU",
+    accessorKey: 'cpu_data',
+    header: 'CPU',
   },
   {
-    accessorKey: "max_cameras",
+    accessorKey: 'max_cameras',
     header: ({ column }) => (
       <DataTableColumnHeaderSort column={column} title="MaxCams" />
     ),
   },
   {
-    accessorKey: "custo_hora",
+    accessorKey: 'custo_hora',
     header: ({ column }) => (
       <DataTableColumnHeaderSort column={column} title="Custo Hora" />
     ),
   },
   {
-    accessorKey: "custo_por_camera_dia",
+    accessorKey: 'custo_por_camera_dia',
     header: ({ column }) => (
       <DataTableColumnHeaderSort column={column} title="Custo Cam/Dia" />
     ),
   },
   {
-    accessorKey: "custo_dia",
+    accessorKey: 'custo_dia',
     header: ({ column }) => (
       <DataTableColumnHeaderSort column={column} title="Custo Dia" />
     ),
   },
   {
-    accessorKey: "custo_mes",
+    accessorKey: 'custo_mes',
     header: ({ column }) => (
       <DataTableColumnHeaderSort column={column} title="Custo Mês" />
     ),
   },
   {
-    accessorKey: "custo_camera_mes",
+    accessorKey: 'custo_camera_mes',
     header: ({ column }) => (
       <DataTableColumnHeaderSort column={column} title="Custo Cam/Mês" />
     ),
   },
   {
-    accessorKey: "inet_down",
-    header: "Download",
+    accessorKey: 'inet_down',
+    header: 'Download',
   },
   {
-    accessorKey: "reliability",
-    header: "Confiabilidade",
+    accessorKey: 'reliability',
+    header: 'Confiabilidade',
   },
   {
-    accessorKey: "public_ipaddr",
-    header: "IP",
+    accessorKey: 'public_ipaddr',
+    header: 'IP',
   },
   {
-    accessorKey: "geolocation",
-    header: "Localização",
+    accessorKey: 'geolocation',
+    header: 'Localização',
   },
   {
-    accessorKey: "action",
-    header: "",
+    accessorKey: 'action',
+    header: '',
     cell: ({ row }) => (
       <ReserveDialog
-        qtd_cameras={row.original["max_cameras"]}
-        docker_tags={row.original["docker_tags"]}
-        offer_id={row.original["offer_id"]}
+        qtd_cameras={row.original.max_cameras}
+        docker_tags={row.original.docker_tags}
+        offer_id={row.original.offer_id}
       />
     ),
   },

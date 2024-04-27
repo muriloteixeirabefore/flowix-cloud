@@ -1,8 +1,8 @@
 'use server'
 
-import { pool } from '@/lib/mysql';
-import { os_client } from '@/lib/opensearch';
-import { RowDataPacket } from 'mysql2';
+import { pool } from '@/lib/mysql'
+import { os_client } from '@/lib/opensearch'
+import { RowDataPacket } from 'mysql2'
 
 interface Area {
   area_id?: number
@@ -35,7 +35,7 @@ AND u.deleted_at IS NULL
 
 export async function getDbData(): Promise<Area[]> {
   try {
-    const [ rows ] = await pool.query<RowDataPacket[]>(query)
+    const [rows] = await pool.query<RowDataPacket[]>(query)
     return rows.map((row) => {
       return {
         area_id: row.area_id,
@@ -48,15 +48,16 @@ export async function getDbData(): Promise<Area[]> {
         empresa_nome: row.empresa_nome,
         unidade_nome: row.unidade_nome,
       }
-    }
-    )
+    })
   } catch (error) {
-    console.error('Erro ao obter áreas:', error);
+    console.error('Erro ao obter áreas:', error)
     throw error
   }
 }
 
-export async function getLastHits( areas_ids: number[] ): Promise<{ area_id: number, timestamp_bsb: string }[]> {
+export async function getLastHits(
+  areas_ids: number[],
+): Promise<{ area_id: number; timestamp_bsb: string }[]> {
   try {
     const { body } = await os_client.search({
       index: 'bioembeddings',
@@ -66,17 +67,17 @@ export async function getLastHits( areas_ids: number[] ): Promise<{ area_id: num
           bool: {
             filter: {
               terms: {
-                area_id: areas_ids
-              }
-            }
-          }
+                area_id: areas_ids,
+              },
+            },
+          },
         },
         aggs: {
           areas: {
             terms: {
               field: 'area_id',
               size: areas_ids.length,
-              order: { latest_timestamp: 'desc' }
+              order: { latest_timestamp: 'desc' },
             },
             aggs: {
               latest_timestamp: { max: { field: 'timestamp' } },
@@ -85,29 +86,27 @@ export async function getLastHits( areas_ids: number[] ): Promise<{ area_id: num
                   size: 1,
                   sort: [{ timestamp: { order: 'desc' } }],
                   _source: {
-                    includes: ['area_id', 'timestamp_bsb']
-                  }
-                }
-              }
-            }
-          }
-        }
+                    includes: ['area_id', 'timestamp_bsb'],
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    })
+
+    const buckets = body.aggregations.areas.buckets
+
+    return buckets.map((bucket: any) => {
+      const latest_record = bucket.latest_record.hits.hits[0]
+      return {
+        area_id: Number(bucket.key),
+        timestamp_bsb: latest_record._source.timestamp_bsb,
       }
     })
-    
-    const buckets = body["aggregations"]["areas"]["buckets"]
-    
-    return buckets.map((bucket: any) => {
-      const latest_record = bucket["latest_record"]["hits"]["hits"][0]
-      return {
-        area_id: Number(bucket["key"]),
-        timestamp_bsb: latest_record["_source"]["timestamp_bsb"]
-      }
-    }
-    )
-
   } catch (error) {
-    console.error('Erro ao obter hits:', error);
+    console.error('Erro ao obter hits:', error)
     throw error
   }
 }
@@ -119,7 +118,7 @@ export async function getAreas() {
 
   return areas.map((area) => {
     const hit = hits.find((hit) => hit.area_id === area.area_id)
-    return {  
+    return {
       area_id: area.area_id,
       area_nome: area.area_nome,
       camera_id: area.camera_id,
@@ -127,7 +126,5 @@ export async function getAreas() {
       empresa_nome: area.empresa_nome,
       timestamp_bsb: hit?.timestamp_bsb,
     }
-  }
-  )
+  })
 }
-  

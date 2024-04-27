@@ -1,4 +1,4 @@
-"use client"
+'use client'
 
 import {
   ColumnDef,
@@ -11,13 +11,18 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
-} from "@tanstack/react-table"
+} from '@tanstack/react-table'
 
-import { DataTableColumnHeaderSort } from "@/components/data-table/column-header-sort"
-import { DataTableFacetedFilter } from "@/components/data-table/faceted-filter"
-import { Button } from "@/components/ui/button"
-import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import { Input } from "@/components/ui/input"
+import { DataTableColumnHeaderSort } from '@/components/data-table/column-header-sort'
+import { DataTableFacetedFilter } from '@/components/data-table/faceted-filter'
+import { Button } from '@/components/ui/button'
+import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
+import { Input } from '@/components/ui/input'
 import {
   Table,
   TableBody,
@@ -25,12 +30,12 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table"
-import { integer } from "@opensearch-project/opensearch/api/types"
-import { useQuery } from "@tanstack/react-query"
-import { Settings2 } from "lucide-react"
-import { useState } from "react"
-import { getAreas } from "../actions/getAreas"
+} from '@/components/ui/table'
+import { integer } from '@opensearch-project/opensearch/api/types'
+import { useQuery } from '@tanstack/react-query'
+import { Settings2 } from 'lucide-react'
+import { useState } from 'react'
+import { getAreas } from '../actions/getAreas'
 
 interface Data {
   area_id?: number
@@ -43,60 +48,63 @@ interface Data {
 
 export const columns: ColumnDef<Data>[] = [
   {
-    accessorKey: "area_id",
+    accessorKey: 'area_id',
     header: ({ column }) => (
       <DataTableColumnHeaderSort column={column} title="ID" />
     ),
-    cell: ({ row }) => <div>{row.getValue("area_id")}</div>,
+    cell: ({ row }) => <div>{row.getValue('area_id')}</div>,
   },
   {
-    accessorKey: "area_nome",
-    header: "Area",
-    cell: ({ row }) => <div>{row.getValue("area_nome")}</div>,
+    accessorKey: 'area_nome',
+    header: 'Area',
+    cell: ({ row }) => <div>{row.getValue('area_nome')}</div>,
   },
   {
-    accessorKey: "camera_id",
+    accessorKey: 'camera_id',
     header: ({ column }) => (
       <DataTableColumnHeaderSort column={column} title="Cam ID" />
     ),
-    cell: ({ row }) => <div>{row.getValue("camera_id")}</div>,
+    cell: ({ row }) => <div>{row.getValue('camera_id')}</div>,
   },
   {
-    accessorKey: "unidade_nome",
-    header: "Unidade",
-    cell: ({ row }) => <div>{row.getValue("unidade_nome")}</div>
+    accessorKey: 'unidade_nome',
+    header: 'Unidade',
+    cell: ({ row }) => <div>{row.getValue('unidade_nome')}</div>,
   },
   {
-    accessorKey: "empresa_nome",
-    header: "Empresa",
-    cell: ({ row }) => <div>{row.getValue("empresa_nome")}</div>
+    accessorKey: 'empresa_nome',
+    header: 'Empresa',
+    cell: ({ row }) => <div>{row.getValue('empresa_nome')}</div>,
   },
   {
-    accessorKey: "timestamp_bsb",
+    accessorKey: 'timestamp_bsb',
     header: ({ column }) => (
-      <DataTableColumnHeaderSort column={column} title="Último registro (BSB)" />
+      <DataTableColumnHeaderSort
+        column={column}
+        title="Último registro (BSB)"
+      />
     ),
     cell: ({ row }) => {
-      if (!row.getValue("timestamp_bsb")) {
+      if (!row.getValue('timestamp_bsb')) {
         return <div>Indefinido</div>
       }
 
       return (
         <div>
-          {new Date(row.getValue("timestamp_bsb")).toLocaleString('pt-BR')}
+          {new Date(row.getValue('timestamp_bsb')).toLocaleString('pt-BR')}
         </div>
-      );
+      )
     },
   },
   {
-    accessorKey: "status",
-    header: "Status",
+    accessorKey: 'status',
+    header: 'Status',
     cell: ({ row }) => {
-      if (!row.getValue("timestamp_bsb")) {
+      if (!row.getValue('timestamp_bsb')) {
         return <div>Indefinido</div>
       }
 
-      const lastHit = new Date(row.getValue("timestamp_bsb"))
+      const lastHit = new Date(row.getValue('timestamp_bsb'))
       const now = new Date()
       const diff = now.getTime() - lastHit.getTime()
       const diffInMinutes = diff / 1000 / 60
@@ -110,7 +118,7 @@ export const columns: ColumnDef<Data>[] = [
       } else {
         return <div>Erro</div>
       }
-    }
+    },
   },
 ]
 
@@ -121,34 +129,34 @@ export default function DataTableDemo() {
     initialData: [
       {
         area_id: 1,
-        area_nome: "Foo",
+        area_nome: 'Foo',
         camera_id: 1,
-        empresa_nome: "Bar",
-        unidade_nome: "Baz",
-        timestamp_bsb: "2021-09-01",
+        empresa_nome: 'Bar',
+        unidade_nome: 'Baz',
+        timestamp_bsb: '2021-09-01',
       },
       {
         area_id: 2,
-        area_nome: "Bar",
+        area_nome: 'Bar',
         camera_id: 2,
-        empresa_nome: "Foo",
-        unidade_nome: "Baz",
-        timestamp_bsb: "2021-09-02",
+        empresa_nome: 'Foo',
+        unidade_nome: 'Baz',
+        timestamp_bsb: '2021-09-02',
       },
       {
         area_id: 3,
-        area_nome: "Baz",
+        area_nome: 'Baz',
         camera_id: 3,
-        empresa_nome: "Foo",
-        unidade_nome: "Bar",
-        timestamp_bsb: "2021-09-03",
+        empresa_nome: 'Foo',
+        unidade_nome: 'Bar',
+        timestamp_bsb: '2021-09-03',
       },
     ],
   })
 
   const [sorting, setSorting] = useState<SortingState>([])
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
-  const [columnVisibility, setColumnVisibility] =useState<VisibilityState>({})
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
   const [rowSelection, setRowSelection] = useState({})
 
   const table = useReactTable({
@@ -171,7 +179,7 @@ export default function DataTableDemo() {
   })
 
   return (
-    <div className="w-auto mx-40">
+    <div className="mx-40 w-auto">
       <div className="flex items-center justify-center py-8">
         <h1 className="text-2xl font-bold">Áreas</h1>
       </div>
@@ -179,51 +187,53 @@ export default function DataTableDemo() {
         <div className="flex items-center space-x-2">
           <Input
             placeholder="Filter area id..."
-            value={(table.getColumn("area_id")?.getFilterValue() as integer) ?? ""}
+            value={
+              (table.getColumn('area_id')?.getFilterValue() as integer) ?? ''
+            }
             onChange={(event) =>
-              table.getColumn("area_id")?.setFilterValue(event.target.value)
+              table.getColumn('area_id')?.setFilterValue(event.target.value)
             }
             className="max-w-sm"
           />
-          {table.getColumn("ip_maquina") && (
+          {table.getColumn('ip_maquina') && (
             <DataTableFacetedFilter
-              column={table.getColumn("camera_status")}
+              column={table.getColumn('camera_status')}
               title="IP Maquina"
               options={[
-                { value: "123456", label: "123456" },
-                { value: "654321", label: "654321" },
+                { value: '123456', label: '123456' },
+                { value: '654321', label: '654321' },
               ]}
             />
           )}
-          {table.getColumn("camera_status") && (
+          {table.getColumn('camera_status') && (
             <DataTableFacetedFilter
-              column={table.getColumn("camera_status")}
+              column={table.getColumn('camera_status')}
               title="Camera Status"
               options={[
-                { value: "processing", label: "Processing" },
-                { value: "idle", label: "Idle" },
-                { value: "queued", label: "Queued" },
-                { value: "online", label: "online" },
+                { value: 'processing', label: 'Processing' },
+                { value: 'idle', label: 'Idle' },
+                { value: 'queued', label: 'Queued' },
+                { value: 'online', label: 'online' },
               ]}
             />
           )}
-          {table.getColumn("unidade_nome") && (
+          {table.getColumn('unidade_nome') && (
             <DataTableFacetedFilter
-              column={table.getColumn("unidade_nome")}
+              column={table.getColumn('unidade_nome')}
               title="Unidade"
               options={[
-                { value: "foo", label: "Foo" },
-                { value: "bar", label: "Bar" },
+                { value: 'foo', label: 'Foo' },
+                { value: 'bar', label: 'Bar' },
               ]}
             />
           )}
-          {table.getColumn("empresa_nome") && (
+          {table.getColumn('empresa_nome') && (
             <DataTableFacetedFilter
-              column={table.getColumn("empresa_nome")}
+              column={table.getColumn('empresa_nome')}
               title="Empresa"
               options={[
-                { value: "foo", label: "Foo" },
-                { value: "bar", label: "Bar" },
+                { value: 'foo', label: 'Foo' },
+                { value: 'bar', label: 'Bar' },
               ]}
             />
           )}
@@ -266,9 +276,9 @@ export default function DataTableDemo() {
                       {header.isPlaceholder
                         ? null
                         : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
+                            header.column.columnDef.header,
+                            header.getContext(),
+                          )}
                     </TableHead>
                   )
                 })}
@@ -280,14 +290,18 @@ export default function DataTableDemo() {
               table.getRowModel().rows.map((row) => (
                 <TableRow
                   // Adiciona cores intercaladas para índices pares e ímpares
-                  className={row.index % 2 === 0 ? "bg-white hover:bg-zinc-300" : "bg-zinc-100 hover:bg-zinc-300"}
-                  data-state={row.getIsSelected() && "selected"}
+                  className={
+                    row.index % 2 === 0
+                      ? 'bg-white hover:bg-zinc-300'
+                      : 'bg-zinc-100 hover:bg-zinc-300'
+                  }
+                  data-state={row.getIsSelected() && 'selected'}
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>
                       {flexRender(
                         cell.column.columnDef.cell,
-                        cell.getContext()
+                        cell.getContext(),
                       )}
                     </TableCell>
                   ))}

@@ -1,4 +1,4 @@
-"use client"
+'use client'
 
 import { queryClient } from '@/lib/tanstack'
 import { QueryClientProvider } from '@tanstack/react-query'

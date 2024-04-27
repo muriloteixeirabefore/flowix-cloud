@@ -1,26 +1,25 @@
-"use server"
+'use server'
 
-import { z } from "zod";
-import { vastAiApi } from "@/lib/axios";
-import { env } from "@/env";
-
+import { z } from 'zod'
+import { vastAiApi } from '@/lib/axios'
+import { env } from '@/env'
 
 const PAYLOAD_BASE = {
-  "label": "",
-  "image": "",
-  "onstart": "",
-  "image_login": "",
-  "client_id": "me",
-  "env": {"TZ": "UTC"},
-  "disk": 20,
-  "extra": null,
-  "runtype": "ssh",
-  "python_utf8": true,
-  "lang_utf8": true,
-  "use_jupyter_lab": false,
-  "jupyter_dir": null,
-  "create_from": null,
-  "force": false
+  label: '',
+  image: '',
+  onstart: '',
+  image_login: '',
+  client_id: 'me',
+  env: { TZ: 'UTC' },
+  disk: 20,
+  extra: null,
+  runtype: 'ssh',
+  python_utf8: true,
+  lang_utf8: true,
+  use_jupyter_lab: false,
+  jupyter_dir: null,
+  create_from: null,
+  force: false,
 }
 
 const startVastAiMachineSchema = z.object({
@@ -28,15 +27,17 @@ const startVastAiMachineSchema = z.object({
   docker_image: z.string(),
   on_start_script: z.string(),
   ask_contract_id: z.string(),
-});
+})
 
-export async function startVastAiMachine(data: z.infer<typeof startVastAiMachineSchema>) {
+export async function startVastAiMachine(
+  data: z.infer<typeof startVastAiMachineSchema>,
+) {
   const response = await vastAiApi.put(`/asks/${data.ask_contract_id}/`, {
     ...PAYLOAD_BASE,
     label: data.machine_name,
     image: data.docker_image,
     onstart: data.on_start_script,
-    image_login: `-u ${env.DOCKER_USERNAME} -p ${env.DOCKER_PASSWORD} docker.io`
+    image_login: `-u ${env.DOCKER_USERNAME} -p ${env.DOCKER_PASSWORD} docker.io`,
   })
   return response.data
 }

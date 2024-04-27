@@ -1,9 +1,15 @@
-"use client"
+'use client'
 
-import { getFusos } from '@/app/actions/getFusos';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { useQuery } from '@tanstack/react-query';
-
+import { getFusos } from '@/app/actions/getFusos'
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table'
+import { useQuery } from '@tanstack/react-query'
 
 export default function Fusos() {
   const { data: response } = useQuery({
