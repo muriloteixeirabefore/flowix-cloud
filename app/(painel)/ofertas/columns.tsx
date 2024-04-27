@@ -1,7 +1,6 @@
+import { ReserveDialog } from '@/app/(painel)/ofertas/reserve-dialog'
 import { DataTableColumnHeaderSort } from '@/components/data-table/column-header-sort'
 import { ColumnDef } from '@tanstack/react-table'
-import { ReserveDialog } from './reserve-dialog'
-// import { getDockerRepositoryTags } from "../actions/docker"
 
 export interface OfferData {
   gpu_data: string

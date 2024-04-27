@@ -13,6 +13,7 @@ import {
   useReactTable,
 } from '@tanstack/react-table'
 
+import { getAreas } from '@/app/actions/getAreas'
 import { DataTableColumnHeaderSort } from '@/components/data-table/column-header-sort'
 import { DataTableFacetedFilter } from '@/components/data-table/faceted-filter'
 import { Button } from '@/components/ui/button'
@@ -35,7 +36,6 @@ import { integer } from '@opensearch-project/opensearch/api/types'
 import { useQuery } from '@tanstack/react-query'
 import { Settings2 } from 'lucide-react'
 import { useState } from 'react'
-import { getAreas } from '../actions/getAreas'
 
 interface Data {
   area_id?: number

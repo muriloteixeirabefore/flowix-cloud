@@ -3,8 +3,8 @@ const nextConfig = {
   logging: {
     fetches: {
       fullUrl: true,
-    }
-  }
-};
+    },
+  },
+}
 
-export default nextConfig;
+export default nextConfig

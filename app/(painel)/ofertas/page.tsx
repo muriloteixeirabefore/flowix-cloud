@@ -1,11 +1,11 @@
 'use client'
 
+import { columns, OfferData } from '@/app/(painel)/ofertas/columns'
+import { getDockerRepositoryTags } from '@/app/actions/docker'
 import { getVastAiOffers } from '@/app/actions/getVastAiOffers'
 import { DataTable } from '@/components/data-table/data-table'
 import { H4 } from '@/components/ui/h4'
 import { useQuery } from '@tanstack/react-query'
-import { getDockerRepositoryTags } from '../../actions/docker'
-import { columns, OfferData } from './columns'
 
 export default function OfertasPage() {
   const { data: result } = useQuery({

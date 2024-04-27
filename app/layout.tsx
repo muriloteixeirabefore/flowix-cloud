@@ -1,9 +1,9 @@
 import { cn } from '@/lib/utils'
 
+import '@/app/globals.css'
+import Providers from '@/app/providers'
 import type { Metadata } from 'next'
 import { Inter as FontSans } from 'next/font/google'
-import './globals.css'
-import Providers from './providers'
 
 const fontSans = FontSans({
   subsets: ['latin'],

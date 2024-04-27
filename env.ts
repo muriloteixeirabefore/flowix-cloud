@@ -9,4 +9,4 @@ export const envSchema = z.object({
   DOCKER_PASSWORD: z.string(),
 })
 
-export const env = envSchema.parse(process.env) 
+export const env = envSchema.parse(process.env)
