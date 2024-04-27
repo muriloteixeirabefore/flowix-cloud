@@ -14,13 +14,13 @@ export default function OfertasPage() {
     initialData: [],
   })
 
-  const { data: docker_tags } = useQuery({
+  const { data: dockerTags } = useQuery({
     queryKey: ['docker_tags'],
     queryFn: () => getDockerRepositoryTags(),
     initialData: [],
   })
 
-  const offer_data: OfferData[] = result?.map((offer: any) => {
+  const offerData: OfferData[] = result?.map((offer: any) => {
     return {
       gpu_data:
         offer.qtd_gpus + 'x ' + offer.gpu_name + ' ' + offer.gpu_ram + 'GB',
@@ -35,7 +35,7 @@ export default function OfertasPage() {
       reliability: (offer.reliability * 100).toFixed(2) + '%',
       public_ipaddr: offer.public_ipaddr,
       geolocation: offer.geolocation,
-      docker_tags: docker_tags.map((tag: string) => 'flowix/ml:' + tag),
+      docker_tags: dockerTags.map((tag: string) => 'flowix/ml:' + tag),
       offer_id: offer.id,
     }
   })
@@ -45,7 +45,7 @@ export default function OfertasPage() {
       <H4>Ofertas</H4>
       <DataTable<OfferData, keyof OfferData>
         columns={columns}
-        data={offer_data}
+        data={offerData}
       />
     </div>
   )

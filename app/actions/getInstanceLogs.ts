@@ -2,7 +2,7 @@
 
 import { vastAiApi } from '@/lib/axios'
 
-export async function getInstanceLogs(instance_id: string) {
+export async function getInstanceLogs(instanceId: string) {
   const today = new Date()
   // format date to mm-dd-yy
   const month = today.getMonth() + 1
@@ -15,12 +15,12 @@ export async function getInstanceLogs(instance_id: string) {
   const dayStr = day < 10 ? '0' + day : day.toString()
   const date = monthStr + '_' + dayStr + '_' + year
 
-  console.log('Getting logs for instance: ' + instance_id + ' on date: ' + date)
+  console.log('Getting logs for instance: ' + instanceId + ' on date: ' + date)
 
   const command = 'cat /Flowix/logs/process_monitor' + date + '.log'
 
   const response = await vastAiApi.put(
-    '/instances/command/' + instance_id + '/',
+    '/instances/command/' + instanceId + '/',
     {
       command,
     },

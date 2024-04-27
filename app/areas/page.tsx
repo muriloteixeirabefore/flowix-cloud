@@ -289,7 +289,7 @@ export default function DataTableDemo() {
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow
-                  // Adiciona cores intercaladas para índices pares e ímpares
+                  key={row.id}
                   className={
                     row.index % 2 === 0
                       ? 'bg-white hover:bg-zinc-300'

@@ -5,15 +5,15 @@ import { vastAiApi } from '@/lib/axios'
 
 const DAY_HOURS = 16
 
-function calculate_max_cameras(offer: any) {
+function calculateMaxCameras(offer: any) {
   // a cada 8 CPU Efetivas, processa 40 cameras
-  const qtd_by_cpu = ((offer.cpu_cores_effective / 8) * 40) / 2
+  const qtdByCpu = ((offer.cpu_cores_effective / 8) * 40) / 2
 
   // a cada 16 Gb Ram, processa 50 câmeras
-  const qtd_by_gpu = (offer.gpu_total_ram / 16) * 50
+  const qtdByGpu = (offer.gpu_total_ram / 16) * 50
 
   // retorna o menor valor e desconta 20%
-  return Math.min(qtd_by_cpu, qtd_by_gpu) * 0.8
+  return Math.min(qtdByCpu, qtdByGpu) * 0.8
 }
 
 export async function getVastAiOffers() {
@@ -33,11 +33,11 @@ export async function getVastAiOffers() {
   const offers = response.data.offers
 
   return offers.map((offer: any) => {
-    const max_cameras = Math.round(calculate_max_cameras(offer))
-    const cost_inet_down_per_camera_hour = (1 / 16) * offer.inet_down_cost // 1 Gb por 16h
-    const cost_per_camera_hour =
-      offer.dph_total / max_cameras + cost_inet_down_per_camera_hour
-    const cost_per_hour = cost_per_camera_hour * max_cameras
+    const maxCameras = Math.round(calculateMaxCameras(offer))
+    const costInetDownPerCameraHour = (1 / 16) * offer.inet_down_cost // 1 Gb por 16h
+    const costPerCameraHour =
+      offer.dph_total / maxCameras + costInetDownPerCameraHour
+    const costPerHour = costPerCameraHour * maxCameras
 
     return {
       id: offer.id,
@@ -46,12 +46,12 @@ export async function getVastAiOffers() {
       qtd_gpus: offer.gpu_ids.length,
       cpu_cores_effective: offer.cpu_cores_effective,
       cpu_name: offer.cpu_name,
-      max_cameras,
-      cost_per_hour,
-      cost_per_day: cost_per_hour * DAY_HOURS,
-      cost_per_month: cost_per_hour * DAY_HOURS * 30,
-      cost_per_camera_day: cost_per_camera_hour * DAY_HOURS,
-      cost_per_camera_month: cost_per_camera_hour * DAY_HOURS * 30,
+      max_cameras: maxCameras,
+      cost_per_hour: costPerHour,
+      cost_per_day: costPerHour * DAY_HOURS,
+      cost_per_month: costPerHour * DAY_HOURS * 30,
+      cost_per_camera_day: costPerCameraHour * DAY_HOURS,
+      cost_per_camera_month: costPerCameraHour * DAY_HOURS * 30,
       inet_down: offer.inet_down,
       reliability: offer.reliability2,
       public_ipaddr: offer.public_ipaddr,

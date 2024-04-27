@@ -1,7 +1,7 @@
 'use server'
 
 import { pool } from '@/lib/mysql'
-import { os_client } from '@/lib/opensearch'
+import { osClient } from '@/lib/opensearch'
 import { RowDataPacket } from 'mysql2'
 
 interface Area {
@@ -56,18 +56,18 @@ export async function getDbData(): Promise<Area[]> {
 }
 
 export async function getLastHits(
-  areas_ids: number[],
+  areasIds: number[],
 ): Promise<{ area_id: number; timestamp_bsb: string }[]> {
   try {
-    const { body } = await os_client.search({
+    const { body } = await osClient.search({
       index: 'bioembeddings',
       body: {
-        size: areas_ids.length,
+        size: areasIds.length,
         query: {
           bool: {
             filter: {
               terms: {
-                area_id: areas_ids,
+                area_id: areasIds,
               },
             },
           },
@@ -76,7 +76,7 @@ export async function getLastHits(
           areas: {
             terms: {
               field: 'area_id',
-              size: areas_ids.length,
+              size: areasIds.length,
               order: { latest_timestamp: 'desc' },
             },
             aggs: {
@@ -99,10 +99,10 @@ export async function getLastHits(
     const buckets = body.aggregations.areas.buckets
 
     return buckets.map((bucket: any) => {
-      const latest_record = bucket.latest_record.hits.hits[0]
+      const latestRecord = bucket.latest_record.hits.hits[0]
       return {
         area_id: Number(bucket.key),
-        timestamp_bsb: latest_record._source.timestamp_bsb,
+        timestamp_bsb: latestRecord._source.timestamp_bsb,
       }
     })
   } catch (error) {
@@ -113,8 +113,8 @@ export async function getLastHits(
 
 export async function getAreas() {
   const areas = await getDbData()
-  const areas_ids = areas.map((area) => area.area_id)
-  const hits = await getLastHits(areas_ids as number[])
+  const areasIds = areas.map((area) => area.area_id)
+  const hits = await getLastHits(areasIds as number[])
 
   return areas.map((area) => {
     const hit = hits.find((hit) => hit.area_id === area.area_id)

@@ -115,11 +115,11 @@ export default function InstancePage() {
                           size="icon"
                           variant="ghost"
                           onClick={() => {
-                            const response = getInstanceLogs(instance.id).then(
-                              ({ result_url, success }) => {
+                            getInstanceLogs(instance.id).then(
+                              ({ result_url: resultUrl, success }) => {
                                 if (success) {
                                   const a = document.createElement('a')
-                                  a.href = result_url
+                                  a.href = resultUrl
                                   a.download = 'logs.txt'
                                   a.target = '_blank'
                                   a.click()

@@ -1,5 +1,7 @@
 'use client'
 
+import { startVastAiMachine } from '@/app/actions/startVastAiMachine'
+import { getMachineLabel } from '@/app/utils'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -28,12 +30,10 @@ import {
 import { Textarea } from '@/components/ui/textarea'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { CircleDollarSign } from 'lucide-react'
-import { useForm } from 'react-hook-form'
-import { z } from 'zod'
-import { get_machine_label } from '@/app/utils'
-import { startVastAiMachine } from '@/app/actions/startVastAiMachine'
-import { toast } from 'sonner'
 import { useRouter } from 'next/navigation'
+import { useForm } from 'react-hook-form'
+import { toast } from 'sonner'
+import { z } from 'zod'
 
 interface ReserveDialogProps {
   qtd_cameras: number
@@ -49,18 +49,18 @@ const reserveFormSchema = z.object({
 })
 
 export function ReserveDialog({
-  qtd_cameras,
-  docker_tags,
-  offer_id,
+  qtd_cameras: qtdCameras,
+  docker_tags: dockerTags,
+  offer_id: offerId,
 }: ReserveDialogProps) {
   const router = useRouter()
   const form = useForm({
     resolver: zodResolver(reserveFormSchema),
     defaultValues: {
-      machine_name: get_machine_label(),
-      docker_image: docker_tags?.[0] || '',
-      qtd_cameras,
-      command: `screen -dmS SESSION screen -S SESSION -X stuff 'python3 /Flowix/FlowixStart.py --cameras ${qtd_cameras} &\\n'`,
+      machine_name: getMachineLabel(),
+      docker_image: dockerTags?.[0] || '',
+      qtd_cameras: qtdCameras,
+      command: `screen -dmS SESSION screen -S SESSION -X stuff 'python3 /Flowix/FlowixStart.py --cameras ${qtdCameras} &\\n'`,
     },
   })
 
@@ -69,7 +69,7 @@ export function ReserveDialog({
       machine_name: values.machine_name,
       docker_image: values.docker_image,
       on_start_script: values.command.replace(/\\n/g, '\n'),
-      ask_contract_id: offer_id,
+      ask_contract_id: offerId,
     }
     startVastAiMachine(payload)
       .then((response) => {
@@ -136,7 +136,7 @@ export function ReserveDialog({
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          {docker_tags?.map((image) => (
+                          {dockerTags?.map((image) => (
                             <SelectItem key={image} value={`${image}`}>
                               {image}
                             </SelectItem>

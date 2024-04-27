@@ -6,8 +6,8 @@ export async function deleteVastAiInstance(instanceId: string) {
   console.log('deleteVastAiInstance', instanceId)
 
   const response = await vastAiApi.delete(`/instances/${instanceId}/`)
-  if (response.status == 200) {
+  if (response.status === 200) {
     // inativa câmeras no mysql
   }
-  return response.status == 200
+  return response.status === 200
 }
