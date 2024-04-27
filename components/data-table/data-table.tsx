@@ -1,6 +1,5 @@
 'use client'
 
-import * as React from 'react'
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -25,8 +24,8 @@ import {
   TableRow,
 } from '@/components/ui/table'
 
-import { DataTablePagination } from './pagination'
 import { useState } from 'react'
+import { DataTablePagination } from './pagination'
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -90,11 +89,6 @@ export function DataTable<TData, TValue>({
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow
-                  className={
-                    row.index % 2 === 0
-                      ? 'bg-white hover:bg-zinc-300'
-                      : 'bg-zinc-100 hover:bg-zinc-300'
-                  }
                   key={row.id}
                   data-state={row.getIsSelected() && 'selected'}
                 >

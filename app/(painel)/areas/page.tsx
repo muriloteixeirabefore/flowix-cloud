@@ -36,6 +36,7 @@ import { integer } from '@opensearch-project/opensearch/api/types'
 import { useQuery } from '@tanstack/react-query'
 import { Settings2 } from 'lucide-react'
 import { useState } from 'react'
+import { H4 } from '@/components/ui/h4'
 
 interface Data {
   area_id?: number
@@ -181,7 +182,7 @@ export default function DataTableDemo() {
   return (
     <div className="mx-40 w-auto">
       <div className="flex items-center justify-center py-8">
-        <h1 className="text-2xl font-bold">Áreas</h1>
+        <H4>Áreas</H4>
       </div>
       <div className="flex items-center py-4">
         <div className="flex items-center space-x-2">
@@ -290,11 +291,6 @@ export default function DataTableDemo() {
               table.getRowModel().rows.map((row) => (
                 <TableRow
                   key={row.id}
-                  className={
-                    row.index % 2 === 0
-                      ? 'bg-white hover:bg-zinc-300'
-                      : 'bg-zinc-100 hover:bg-zinc-300'
-                  }
                   data-state={row.getIsSelected() && 'selected'}
                 >
                   {row.getVisibleCells().map((cell) => (

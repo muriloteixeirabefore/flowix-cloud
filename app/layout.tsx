@@ -5,10 +5,7 @@ import Providers from '@/app/providers'
 import type { Metadata } from 'next'
 import { Inter as FontSans } from 'next/font/google'
 
-const fontSans = FontSans({
-  subsets: ['latin'],
-  variable: '--font-sans',
-})
+const fontSans = FontSans({ subsets: ['latin'], variable: '--font-sans' })
 
 export const metadata: Metadata = {
   title: 'Flowix Cloud',
@@ -17,21 +14,17 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode
-}>) {
+}: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="pt-br">
-      <Providers>
-        <body
-          className={cn(
-            'min-h-screen bg-background font-sans antialiased',
-            fontSans.variable,
-          )}
-        >
-          {children}
-        </body>
-      </Providers>
+    <html lang="pt-br" suppressHydrationWarning>
+      <body
+        className={cn(
+          'min-h-screen bg-background font-sans antialiased',
+          fontSans.variable,
+        )}
+      >
+        <Providers>{children}</Providers>
+      </body>
     </html>
   )
 }

@@ -43,6 +43,8 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog'
+import { P } from '@/components/ui/p'
+import { Ul } from '@/components/ui/ul'
 
 export default function InstancePage() {
   // useQuery to getInstances
@@ -134,7 +136,7 @@ export default function InstancePage() {
                         </Button>
                       </TooltipTrigger>
                       <TooltipContent>
-                        <p>Ver logs</p>
+                        <P>Ver logs</P>
                       </TooltipContent>
                     </Tooltip>
                   </TooltipProvider>
@@ -149,14 +151,14 @@ export default function InstancePage() {
                       <AlertDialogHeader>
                         <AlertDialogTitle>Você tem certeza?</AlertDialogTitle>
                         <AlertDialogDescription>
-                          <ul>
+                          <Ul>
                             <li>Nome: {instance.label}</li>
                             <li>Status: {instance.actual_status}</li>
                             <li>State: {instance.cur_state}</li>
                             <li>Specs: {instance.specs}</li>
                             <li>IP: {instance.ip}</li>
                             <li>Location: {instance.location}</li>
-                          </ul>
+                          </Ul>
                         </AlertDialogDescription>
                       </AlertDialogHeader>
                       <AlertDialogFooter>
