@@ -123,36 +123,11 @@ export const columns: ColumnDef<Data>[] = [
   },
 ]
 
-export default function DataTableDemo() {
+export default function AreasPage() {
   const { data } = useQuery({
     queryKey: ['responses'],
     queryFn: () => getAreas(),
-    initialData: [
-      {
-        area_id: 1,
-        area_nome: 'Foo',
-        camera_id: 1,
-        empresa_nome: 'Bar',
-        unidade_nome: 'Baz',
-        timestamp_bsb: '2021-09-01',
-      },
-      {
-        area_id: 2,
-        area_nome: 'Bar',
-        camera_id: 2,
-        empresa_nome: 'Foo',
-        unidade_nome: 'Baz',
-        timestamp_bsb: '2021-09-02',
-      },
-      {
-        area_id: 3,
-        area_nome: 'Baz',
-        camera_id: 3,
-        empresa_nome: 'Foo',
-        unidade_nome: 'Bar',
-        timestamp_bsb: '2021-09-03',
-      },
-    ],
+    initialData: [],
   })
 
   const [sorting, setSorting] = useState<SortingState>([])
