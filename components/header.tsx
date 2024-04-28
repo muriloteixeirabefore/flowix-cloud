@@ -1,47 +1,45 @@
 import { NavLink } from '@/components/nav-link'
-import { Separator } from '@/components/ui/separator'
-import { Settings } from 'lucide-react'
-import Image from 'next/image'
-import { ThemeModeToggle } from './theme-mode-toggle'
+import {
+  DollarSign,
+  Globe,
+  LaptopMinimal,
+  MonitorPlay,
+  Settings,
+} from 'lucide-react'
+import { ThemeSwitcher } from './theme-switcher'
 import { Button } from './ui/button'
 
 export function Header() {
   return (
-    <div className="border-b">
-      <div className="flex h-16 items-center gap-6 px-6">
-        <Image
-          src="/logo-light.svg"
-          alt="Logo"
-          className="size-14 dark:hidden"
-          width={0}
-          height={0}
-          priority={true}
-        />
-        <Image
-          src="/logo-dark.svg"
-          alt="Logo"
-          className="hidden size-14 dark:block"
-          width={0}
-          height={0}
-          priority={true}
-        />
-        <Separator orientation="vertical" className="h-6" />
-
-        <nav className="flex items-center space-x-4 lg:space-x-6">
-          <NavLink href="/ofertas">Ofertas</NavLink>
-          <NavLink href="/instancias">Instancias</NavLink>
-          <NavLink href="/areas">Areas</NavLink>
-          <NavLink href="/fusos">Fusos</NavLink>
-        </nav>
-        <div className="ml-auto flex items-center space-x-2">
-          <ThemeModeToggle />
+    <nav className="fixed top-0 z-50 h-16 w-full border-b bg-inherit px-5 py-3">
+      <div className="flex justify-between">
+        <div className="flex gap-6">
+          <NavLink href="/ofertas">
+            <DollarSign className="mr-0.5 size-4" />
+            <span>Ofertas</span>
+          </NavLink>
+          <NavLink href="/instancias">
+            <LaptopMinimal className="mr-0.5 size-4" />
+            <span>Instancias</span>
+          </NavLink>
+          <NavLink href="/areas">
+            <MonitorPlay className="mr-0.5 size-4" />
+            <span>Areas</span>
+          </NavLink>
+          <NavLink href="/fusos">
+            <Globe className="mr-0.5 size-4" />
+            <span>Fusos</span>
+          </NavLink>
+        </div>
+        <div className="flex gap-2">
+          <ThemeSwitcher />
           <NavLink href="/configuracoes">
             <Button variant="ghost" size="icon">
-              <Settings className="size-5" />
+              <Settings />
             </Button>
           </NavLink>
         </div>
       </div>
-    </div>
+    </nav>
   )
 }

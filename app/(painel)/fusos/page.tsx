@@ -1,6 +1,7 @@
 'use client'
 
 import { getFusos } from '@/app/actions/getFusos'
+import { H4 } from '@/components/ui/h4'
 import {
   Table,
   TableBody,
@@ -18,8 +19,8 @@ export default function Fusos() {
   })
 
   return (
-    <div className="flex min-h-screen flex-col items-center p-8">
-      <h1 className="text-2xl font-bold">Fusos</h1>
+    <div className="space-y-5">
+      <H4>Fusos</H4>
 
       <Table>
         <TableHeader>

@@ -41,7 +41,7 @@ export default function OfertasPage() {
   })
 
   return (
-    <div className="mx-5 my-5 w-auto space-y-5">
+    <div className="space-y-5">
       <H4>Ofertas</H4>
       <DataTable<OfferData, keyof OfferData>
         columns={columns}

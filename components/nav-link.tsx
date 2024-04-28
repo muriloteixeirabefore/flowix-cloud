@@ -13,7 +13,7 @@ export function NavLink(props: NavLinkProps) {
     <Link
       {...props}
       data-current={props.href === pathname}
-      className="flex items-center gap-1.5 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground data-[current=true]:text-foreground"
+      className="flex items-center justify-center text-sm font-medium text-muted-foreground transition-colors hover:text-foreground data-[current=true]:text-foreground"
     />
   )
 }

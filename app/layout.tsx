@@ -17,12 +17,7 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="pt-br" suppressHydrationWarning>
-      <body
-        className={cn(
-          'min-h-screen bg-background font-sans antialiased',
-          fontSans.variable,
-        )}
-      >
+      <body className={cn('font-sans antialiased', fontSans.variable)}>
         <Providers>{children}</Providers>
       </body>
     </html>

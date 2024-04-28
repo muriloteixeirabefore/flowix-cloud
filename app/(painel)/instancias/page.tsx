@@ -55,8 +55,9 @@ export default function InstancePage() {
   })
 
   return (
-    <div className="mx-5 my-5 w-auto space-y-5">
+    <div className="space-y-5">
       <H4>Instâncias</H4>
+
       <Table>
         <TableCaption>Lista de instancias</TableCaption>
         <TableHeader>

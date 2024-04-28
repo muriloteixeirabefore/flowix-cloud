@@ -23,6 +23,7 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+import { H4 } from '@/components/ui/h4'
 import { Input } from '@/components/ui/input'
 import {
   Table,
@@ -36,7 +37,6 @@ import { integer } from '@opensearch-project/opensearch/api/types'
 import { useQuery } from '@tanstack/react-query'
 import { Settings2 } from 'lucide-react'
 import { useState } from 'react'
-import { H4 } from '@/components/ui/h4'
 
 interface Data {
   area_id?: number
@@ -180,11 +180,9 @@ export default function DataTableDemo() {
   })
 
   return (
-    <div className="mx-40 w-auto">
-      <div className="flex items-center justify-center py-8">
-        <H4>Áreas</H4>
-      </div>
-      <div className="flex items-center py-4">
+    <div className="space-y-5">
+      <H4>Áreas</H4>
+      <div className="flex items-center">
         <div className="flex items-center space-x-2">
           <Input
             placeholder="Filter area id..."

@@ -1,4 +1,5 @@
 import { Header } from '@/components/header'
+import { Sidebar } from '@/components/sidebar'
 import { ReactNode } from 'react'
 
 interface PainelLayoutProps {
@@ -9,7 +10,8 @@ export default async function PainelLayout({ children }: PainelLayoutProps) {
   return (
     <>
       <Header />
-      <main>{children}</main>
+      <Sidebar />
+      <main className="ml-12 mt-16 h-auto w-auto p-4">{children}</main>
     </>
   )
 }
