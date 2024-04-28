@@ -1,127 +1,10 @@
 'use client'
 
-import {
-  ColumnDef,
-  ColumnFiltersState,
-  SortingState,
-  VisibilityState,
-  flexRender,
-  getCoreRowModel,
-  getFilteredRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
-  useReactTable,
-} from '@tanstack/react-table'
-
+import { AreaData, columns } from '@/app/(painel)/areas/columns'
 import { getAreas } from '@/app/actions/getAreas'
-import { DataTableColumnHeaderSort } from '@/components/data-table/column-header-sort'
-import { DataTableFacetedFilter } from '@/components/data-table/faceted-filter'
-import { Button } from '@/components/ui/button'
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
+import { DataTable } from '@/components/data-table/data-table'
 import { H4 } from '@/components/ui/h4'
-import { Input } from '@/components/ui/input'
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table'
-import { integer } from '@opensearch-project/opensearch/api/types'
 import { useQuery } from '@tanstack/react-query'
-import { Settings2 } from 'lucide-react'
-import { useState } from 'react'
-
-interface Data {
-  area_id?: number
-  area_nome?: string
-  camera_id?: number
-  empresa_nome?: string
-  unidade_nome?: string
-  timestamp_bsb?: string
-}
-
-export const columns: ColumnDef<Data>[] = [
-  {
-    accessorKey: 'area_id',
-    header: ({ column }) => (
-      <DataTableColumnHeaderSort column={column} title="ID" />
-    ),
-    cell: ({ row }) => <div>{row.getValue('area_id')}</div>,
-  },
-  {
-    accessorKey: 'area_nome',
-    header: 'Area',
-    cell: ({ row }) => <div>{row.getValue('area_nome')}</div>,
-  },
-  {
-    accessorKey: 'camera_id',
-    header: ({ column }) => (
-      <DataTableColumnHeaderSort column={column} title="Cam ID" />
-    ),
-    cell: ({ row }) => <div>{row.getValue('camera_id')}</div>,
-  },
-  {
-    accessorKey: 'unidade_nome',
-    header: 'Unidade',
-    cell: ({ row }) => <div>{row.getValue('unidade_nome')}</div>,
-  },
-  {
-    accessorKey: 'empresa_nome',
-    header: 'Empresa',
-    cell: ({ row }) => <div>{row.getValue('empresa_nome')}</div>,
-  },
-  {
-    accessorKey: 'timestamp_bsb',
-    header: ({ column }) => (
-      <DataTableColumnHeaderSort
-        column={column}
-        title="Último registro (BSB)"
-      />
-    ),
-    cell: ({ row }) => {
-      if (!row.getValue('timestamp_bsb')) {
-        return <div>Indefinido</div>
-      }
-
-      return (
-        <div>
-          {new Date(row.getValue('timestamp_bsb')).toLocaleString('pt-BR')}
-        </div>
-      )
-    },
-  },
-  {
-    accessorKey: 'status',
-    header: 'Status',
-    cell: ({ row }) => {
-      if (!row.getValue('timestamp_bsb')) {
-        return <div>Indefinido</div>
-      }
-
-      const lastHit = new Date(row.getValue('timestamp_bsb'))
-      const now = new Date()
-      const diff = now.getTime() - lastHit.getTime()
-      const diffInMinutes = diff / 1000 / 60
-
-      if (now.getDate() !== lastHit.getDate()) {
-        return <div className="text-red-500">Sem registro no dia</div>
-      } else if (diffInMinutes < 30) {
-        return <div className="text-green-500">Inferior a 30 minutos</div>
-      } else if (diffInMinutes >= 30) {
-        return <div className="text-yellow-500">Superior a 30 minutos</div>
-      } else {
-        return <div>Erro</div>
-      }
-    },
-  },
-]
 
 export default function AreasPage() {
   const { data } = useQuery({
@@ -130,34 +13,10 @@ export default function AreasPage() {
     initialData: [],
   })
 
-  const [sorting, setSorting] = useState<SortingState>([])
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
-  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
-  const [rowSelection, setRowSelection] = useState({})
-
-  const table = useReactTable({
-    data,
-    columns,
-    onSortingChange: setSorting,
-    onColumnFiltersChange: setColumnFilters,
-    getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
-    onColumnVisibilityChange: setColumnVisibility,
-    onRowSelectionChange: setRowSelection,
-    state: {
-      sorting,
-      columnFilters,
-      columnVisibility,
-      rowSelection,
-    },
-  })
-
   return (
     <div className="space-y-5">
       <H4>Áreas</H4>
-      <div className="flex items-center">
+      {/* <div className="flex items-center">
         <div className="flex items-center space-x-2">
           <Input
             placeholder="Filter area id..."
@@ -212,103 +71,8 @@ export default function AreasPage() {
             />
           )}
         </div>
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline" className="ml-auto">
-              <Settings2 className="mr-2 h-4 w-4" /> Colunas
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            {table
-              .getAllColumns()
-              .filter((column) => column.getCanHide())
-              .map((column) => {
-                return (
-                  <DropdownMenuCheckboxItem
-                    key={column.id}
-                    className="capitalize"
-                    checked={column.getIsVisible()}
-                    onCheckedChange={(value) =>
-                      column.toggleVisibility(!!value)
-                    }
-                  >
-                    {column.id}
-                  </DropdownMenuCheckboxItem>
-                )
-              })}
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </div>
-      <div className="rounded-md border">
-        <Table>
-          <TableHeader>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <TableHead key={header.id}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext(),
-                          )}
-                    </TableHead>
-                  )
-                })}
-              </TableRow>
-            ))}
-          </TableHeader>
-          <TableBody>
-            {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
-                <TableRow
-                  key={row.id}
-                  data-state={row.getIsSelected() && 'selected'}
-                >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext(),
-                      )}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell
-                  colSpan={columns.length}
-                  className="h-24 text-center"
-                >
-                  No results.
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
-      </div>
-      <div className="flex items-center justify-end space-x-2 py-4">
-        <div className="space-x-2">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => table.previousPage()}
-            disabled={!table.getCanPreviousPage()}
-          >
-            Previous
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => table.nextPage()}
-            disabled={!table.getCanNextPage()}
-          >
-            Next
-          </Button>
-        </div>
-      </div>
+      </div> */}
+      <DataTable<AreaData, keyof AreaData> columns={columns} data={data} />
     </div>
   )
 }

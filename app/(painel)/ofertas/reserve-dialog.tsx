@@ -170,16 +170,15 @@ export function ReserveDialog({
             </div>
             <DialogFooter>
               <DialogClose asChild>
-                <Button className="space-x-1 rounded-md bg-red-500 text-white shadow-md hover:bg-red-700">
+                <Button className="space-x-1 bg-red-500 text-white shadow-md hover:bg-red-700">
                   Cancelar
                 </Button>
               </DialogClose>
               <Button
                 type="submit"
-                className="space-x-1 rounded-md bg-blue-500 text-white shadow-md hover:bg-blue-700"
+                className="space-x-1 bg-blue-500 text-white shadow-md hover:bg-blue-700"
               >
-                <CircleDollarSign className="h-4 w-4" />
-                <span>Reservar</span>
+                <span>Confirmar</span>
               </Button>
             </DialogFooter>
           </form>
