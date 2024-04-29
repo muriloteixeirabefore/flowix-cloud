@@ -9,7 +9,7 @@ export default function Home() {
       <H1>Home</H1>
 
       <div className="mt-8 space-x-4">
-        <Link className="text-blue-500" href="/ofertas">
+        <Link className="text-blue-500" href="/cloud">
           Painel
         </Link>
       </div>

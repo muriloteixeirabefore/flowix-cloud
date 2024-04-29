@@ -1,7 +1,7 @@
 'use client'
 
-import { AreaData, columns } from '@/app/(painel)/areas/columns'
 import { getAreas } from '@/app/actions/getAreas'
+import { AreaData, columns } from '@/app/monitor/(areas)/columns'
 import { DataTable } from '@/components/data-table/data-table'
 import { H4 } from '@/components/ui/h4'
 import { useQuery } from '@tanstack/react-query'

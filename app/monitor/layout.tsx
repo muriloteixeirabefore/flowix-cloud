@@ -1,5 +1,6 @@
+import { MonitorSidebar } from '@/app/monitor/monitor-sidebar'
 import { Header } from '@/components/header'
-import { Sidebar } from '@/components/sidebar'
+import { Main } from '@/components/ui/main'
 import { ReactNode } from 'react'
 
 interface PainelLayoutProps {
@@ -10,8 +11,8 @@ export default async function PainelLayout({ children }: PainelLayoutProps) {
   return (
     <>
       <Header />
-      <Sidebar />
-      <main className="ml-12 mt-16 h-auto w-auto p-4">{children}</main>
+      <MonitorSidebar />
+      <Main>{children}</Main>
     </>
   )
 }

@@ -1,4 +1,4 @@
-import { ReserveDialog } from '@/app/(painel)/ofertas/reserve-dialog'
+import { ReserveDialog } from '@/app/cloud/ofertas/reserve-dialog'
 import { DataTableColumnHeaderSort } from '@/components/data-table/column-header-sort'
 import { ColumnDef } from '@tanstack/react-table'
 

@@ -1,8 +1,8 @@
 'use client'
 
-import { columns, OfferData } from '@/app/(painel)/ofertas/columns'
 import { getDockerRepositoryTags } from '@/app/actions/docker'
 import { getVastAiOffers } from '@/app/actions/getVastAiOffers'
+import { columns, OfferData } from '@/app/cloud/ofertas/columns'
 import { DataTable } from '@/components/data-table/data-table'
 import { H4 } from '@/components/ui/h4'
 import { useQuery } from '@tanstack/react-query'
