@@ -47,9 +47,8 @@ import { P } from '@/components/ui/p'
 import { Ul } from '@/components/ui/ul'
 
 export default function InstancePage() {
-  // useQuery to getInstances
   const { data: instances } = useQuery({
-    queryKey: ['instances'], // "instances" is a unique identifier for this query
+    queryKey: ['instances'],
     queryFn: () => getInstances(),
     refetchInterval: 1000 * 5, // refetch every 5 seconds
   })

@@ -76,10 +76,9 @@ export function ReserveDialog({
         toast('Máquina reservada com sucesso!', {
           action: {
             label: 'Ver Instancia',
-            onClick: () => router.push('/instancias/' + response.new_contract),
+            onClick: () => router.push('/cloud/' + response.new_contract),
           },
         })
-        router.push('/instancias')
       })
       .catch((error) => {
         toast.error('Erro ao reservar máquina: ' + error)

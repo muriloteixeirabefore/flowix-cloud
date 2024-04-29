@@ -1,7 +1,9 @@
+interface InstanceDetailPageProps {
+  params: { instance_id: string }
+}
+
 export default function InstanceDetailPage({
   params,
-}: {
-  params: { instance_id: string }
-}) {
-  return <div>My Post: {params.instance_id}</div>
+}: InstanceDetailPageProps) {
+  return <div>Instancia: {params.instance_id}</div>
 }
