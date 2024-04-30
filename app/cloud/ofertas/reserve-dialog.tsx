@@ -68,7 +68,7 @@ export function ReserveDialog({
     const payload = {
       machine_name: values.machine_name,
       docker_image: values.docker_image,
-      on_start_script: values.command.replace(/\\n/g, '\n'),
+      on_start_script: values.command,
       ask_contract_id: offerId,
     }
     startVastAiMachine(payload)

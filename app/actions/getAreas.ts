@@ -17,13 +17,13 @@ interface Area {
 }
 
 const query = `
-SELECT 
+SELECT
 a.id area_id, a.nome area_nome, 
 c.id camera_id, c.nome camera_nome, c.vision_ip ip_maquina, 
 c.status camera_status, c.created_at camera_created_at, 
 e.nome empresa_nome, u.nome unidade_nome
-FROM area a 
-JOIN camera c ON c.id = a.fk_area_camera 
+FROM camera c 
+JOIN area a ON a.fk_area_camera = c.id
 JOIN empresa e ON e.id = c.fk_camera_empresa 
 JOIN unidade u ON u.id = c.fk_camera_unidade 
 WHERE e.demonstracao IS FALSE
