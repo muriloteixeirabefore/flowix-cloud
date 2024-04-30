@@ -1,9 +1,10 @@
 import mysql from 'mysql2/promise'
+import { env } from '@/env'
 
 export const pool = mysql.createPool({
-  host: 'api-server-before.cdilck5zn3g0.us-east-1.rds.amazonaws.com',
-  user: 'flowix_adm',
-  password: '4X3MUW92PCEZ4',
-  database: 'flowix',
-  port: 3306,
+  database: env.DB_DATABASE,
+  host: env.DB_HOST,
+  password: env.DB_PASSWORD,
+  port: parseInt(env.DB_PORT),
+  user: env.DB_USER,
 })
