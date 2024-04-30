@@ -36,7 +36,7 @@ export async function startVastAiMachine(
     ...PAYLOAD_BASE,
     label: data.machine_name,
     image: data.docker_image,
-    onstart: data.on_start_script.replace(/\\n/g, '\n'),
+    onstart: data.on_start_script,
     image_login: `-u ${env.DOCKER_USERNAME} -p ${env.DOCKER_PASSWORD} docker.io`,
   })
   return response.data

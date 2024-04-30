@@ -60,7 +60,7 @@ export function ReserveDialog({
       machine_name: getMachineLabel(),
       docker_image: dockerTags?.[0] || '',
       qtd_cameras: qtdCameras,
-      command: `screen -dmS SESSION screen -S SESSION -X stuff 'python3 /Flowix/FlowixStart.py --cameras ${qtdCameras} &\\n'`,
+      command: `screen -dmS SESSION; screen -S SESSION -X stuff 'python3 /Flowix/FlowixStart.py --cameras ${qtdCameras} &\\n'`,
     },
   })
 
