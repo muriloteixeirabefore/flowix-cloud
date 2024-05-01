@@ -7,7 +7,6 @@ import { H4 } from '@/components/ui/h4'
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
@@ -45,6 +44,7 @@ import {
 } from '@/components/ui/alert-dialog'
 import { P } from '@/components/ui/p'
 import { Ul } from '@/components/ui/ul'
+import { SettingsSheet } from './settings'
 
 export default function InstancePage() {
   const { data: instances } = useQuery({
@@ -55,10 +55,11 @@ export default function InstancePage() {
 
   return (
     <div className="space-y-5">
-      <H4>Instâncias</H4>
-
+      <div className="flex items-center justify-between">
+        <H4>Instâncias</H4>
+        <SettingsSheet />
+      </div>
       <Table>
-        <TableCaption>Lista de instancias</TableCaption>
         <TableHeader>
           <TableRow>
             <TableHead>Nome</TableHead>
@@ -71,7 +72,6 @@ export default function InstancePage() {
             <TableHead>IP</TableHead>
             <TableHead>Location</TableHead>
             <TableHead>Status Message</TableHead>
-            <TableHead></TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -96,7 +96,7 @@ export default function InstancePage() {
                 <TableCell>{instance.ram}</TableCell>
                 <TableCell>{instance.specs}</TableCell>
                 <TableCell>
-                  <Button
+                  {/* <Button
                     variant="ghost"
                     onClick={() => {
                       navigator.clipboard.writeText(instance.ip)
@@ -105,7 +105,10 @@ export default function InstancePage() {
                     }}
                   >
                     {instance.ip} <CopyIcon className="ml-2 h-4 w-4" />
-                  </Button>
+                  </Button> */}
+                  <div className="flex">
+                    {instance.ip} <CopyIcon className="ml-2 h-4 w-4" />
+                  </div>
                 </TableCell>
                 <TableCell>{instance.location}</TableCell>
                 <TableCell>{instance.status_msg}</TableCell>

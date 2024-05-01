@@ -5,7 +5,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip'
-import { DollarSign, LaptopMinimal, Settings } from 'lucide-react'
+import { DollarSign, LaptopMinimal } from 'lucide-react'
 
 export function CloudSidebar() {
   return (
@@ -30,11 +30,6 @@ export function CloudSidebar() {
               <TooltipContent side="right">Ofertas</TooltipContent>
             </Tooltip>
           </TooltipProvider>
-        </nav>
-        <nav className="space-y-4">
-          <SidebarLink href="/configuracoes">
-            <Settings />
-          </SidebarLink>
         </nav>
       </div>
     </aside>
