@@ -10,7 +10,7 @@ const PAYLOAD_BASE = {
   onstart: '',
   image_login: '',
   client_id: 'me',
-  env: { TZ: 'UTC' },
+  env: { TZ: 'UTC', API_FLOWIX_KEY: btoa('tokenteste') },
   disk: 20,
   extra: null,
   runtype: 'ssh',

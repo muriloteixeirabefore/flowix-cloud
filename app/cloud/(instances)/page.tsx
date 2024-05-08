@@ -13,7 +13,6 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import {
-  CopyIcon,
   FileTextIcon,
   OpenInNewWindowIcon,
   TrashIcon,
@@ -96,19 +95,7 @@ export default function InstancePage() {
                 <TableCell>{instance.ram}</TableCell>
                 <TableCell>{instance.specs}</TableCell>
                 <TableCell>
-                  {/* <Button
-                    variant="ghost"
-                    onClick={() => {
-                      navigator.clipboard.writeText(instance.ip)
-
-                      toast.success('IP copiado para a área de transferência')
-                    }}
-                  >
-                    {instance.ip} <CopyIcon className="ml-2 h-4 w-4" />
-                  </Button> */}
-                  <div className="flex">
-                    {instance.ip} <CopyIcon className="ml-2 h-4 w-4" />
-                  </div>
+                  <div className="flex">{instance.ip}</div>
                 </TableCell>
                 <TableCell>{instance.location}</TableCell>
                 <TableCell>{instance.status_msg}</TableCell>

@@ -52,8 +52,8 @@ export function SettingsSheet() {
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <Button variant="ghost" size="icon">
-          <Settings />
+        <Button variant="ghost" className="gap-2">
+          Liberar IP da instância <Settings />
         </Button>
       </SheetTrigger>
       <SheetContent>
