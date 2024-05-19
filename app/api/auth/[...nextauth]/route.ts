@@ -49,9 +49,6 @@ const nextAuthOptions: NextAuthOptions = {
       },
     }),
   ],
-  pages: {
-    signIn: '/?sign-in',
-  },
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
