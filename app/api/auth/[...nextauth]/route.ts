@@ -54,13 +54,16 @@ const nextAuthOptions: NextAuthOptions = {
   },
   callbacks: {
     async jwt({ token, user }) {
-      user &&
-        ((token.accessToken = user.accessToken),
-        (token.user = {
-          id: user.id,
-          username: user.username,
-          is_superuser: user.is_superuser,
-        }))
+      if (user) {
+        token.accessToken = user.accessToken
+        token.refreshToken = user.refreshToken
+        token.tokenType = user.tokenType
+        token.user = {
+          roles: user.roles,
+          funcao: user.funcao,
+          empresaId: user.empresaId,
+        }
+      }
       return token
     },
     async session({ session, token }) {
@@ -73,5 +76,4 @@ const nextAuthOptions: NextAuthOptions = {
 
 const handler = NextAuth(nextAuthOptions)
 
-export { handler as GET, handler as POST, nextAuthOptions }
-
+export { handler as GET, handler as POST }
