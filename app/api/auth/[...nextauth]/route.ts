@@ -49,6 +49,9 @@ const nextAuthOptions: NextAuthOptions = {
       },
     }),
   ],
+  pages: {
+    signIn: '/?sign-in',
+  },
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
@@ -73,4 +76,5 @@ const nextAuthOptions: NextAuthOptions = {
 
 const handler = NextAuth(nextAuthOptions)
 
-export { handler as POST }
+export { handler as GET, handler as POST, nextAuthOptions }
+
