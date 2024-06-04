@@ -29,7 +29,7 @@ import {
 } from '@/components/ui/select'
 import { Textarea } from '@/components/ui/textarea'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { CircleDollarSign } from 'lucide-react'
+import { DollarSign } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
@@ -88,9 +88,8 @@ export function ReserveDialog({
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button className="space-x-1 rounded-md bg-blue-500 text-white shadow-md hover:bg-blue-700">
-          <CircleDollarSign className="h-4 w-4" />
-          <span>Reservar</span>
+        <Button className="bg-blue-600 text-white shadow-md hover:bg-green-500">
+          <DollarSign className="h-5 w-5" />
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[900px]">

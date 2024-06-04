@@ -6,7 +6,7 @@ import { useQuery } from '@tanstack/react-query'
 import { WebhookTable } from './Webhook'
 
 export default function WebhookCallsPage() {
-  const { data, error } = useQuery({
+  const { data } = useQuery({
     queryKey: ['responses'],
     queryFn: () => getWebhookCalls(),
     initialData: [],

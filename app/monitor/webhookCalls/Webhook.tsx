@@ -8,7 +8,7 @@ import {
   TableRow,
 } from '@/components/ui/table'
 
-export function WebhookTable({ data }) {
+export function WebhookTable({ data }: any) {
   return (
     <Table>
       <TableHeader>
@@ -22,7 +22,7 @@ export function WebhookTable({ data }) {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {data.map((call) => (
+        {data.map((call: any) => (
           <TableRow key={call.id}>
             <TableCell className="font-medium">{call.request_id}</TableCell>
             <TableCell>

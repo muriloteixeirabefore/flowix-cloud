@@ -23,8 +23,9 @@ export default function OfertasPage() {
   const offerData: OfferData[] = result?.map((offer: any) => {
     return {
       gpu_data:
-        offer.qtd_gpus + 'x ' + offer.gpu_name + ' ' + offer.gpu_ram + 'GB',
-      cpu_data: offer.cpu_cores_effective + ' x ' + offer.cpu_name,
+        offer.num_gpus + ' ' + offer.gpu_name + ' ' + offer.gpu_ram + 'GB',
+      cpu_data: offer.cpu_cores_effective + ' Cores ' + offer.cpu_name,
+      cpu_ram: offer.cpu_ram + 'GB',
       max_cameras: offer.max_cameras,
       custo_hora: '$' + offer.cost_per_hour.toFixed(2),
       custo_por_camera_dia: '$' + offer.cost_per_camera_day.toFixed(2),

@@ -5,6 +5,7 @@ import { ColumnDef } from '@tanstack/react-table'
 export interface OfferData {
   gpu_data: string
   cpu_data: string
+  cpu_ram: string
   max_cameras: number
   custo_hora: string
   custo_por_camera_dia: string
@@ -28,6 +29,12 @@ export const columns: ColumnDef<OfferData>[] = [
   {
     accessorKey: 'cpu_data',
     header: 'CPU',
+  },
+  {
+    accessorKey: 'cpu_ram',
+    header: ({ column }) => (
+      <DataTableColumnHeaderSort column={column} title="RAM" />
+    ),
   },
   {
     accessorKey: 'max_cameras',
