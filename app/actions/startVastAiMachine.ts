@@ -1,43 +1,58 @@
 'use server'
 
 import { env } from '@/env'
-import { vastAiApi } from '@/lib/axios'
-import { z } from 'zod'
+import { flowixApi } from '@/lib/axios'
 
-const PAYLOAD_BASE = {
-  label: '',
-  image: '',
-  onstart: '',
-  image_login: '',
-  client_id: 'me',
-  env: { TZ: 'UTC', API_FLOWIX_KEY: btoa('tokenteste') },
-  disk: 20,
-  extra: null,
-  runtype: 'ssh',
-  python_utf8: true,
-  lang_utf8: true,
-  use_jupyter_lab: false,
-  jupyter_dir: null,
-  create_from: null,
-  force: false,
+interface StartData {
+  machine_name: string
+  docker_image: string
+  on_start_script: string
+  ask_contract_id: string
+  public_ipaddr: string
 }
 
-const startVastAiMachineSchema = z.object({
-  machine_name: z.string(),
-  docker_image: z.string(),
-  on_start_script: z.string(),
-  ask_contract_id: z.string(),
-})
+export async function startVastAiMachine(data: StartData) {
+  createMachineInstance({
+    label: data.machine_name,
+    ipv4: data.public_ipaddr,
+  })
 
-export async function startVastAiMachine(
-  data: z.infer<typeof startVastAiMachineSchema>,
-) {
-  const response = await vastAiApi.put(`/asks/${data.ask_contract_id}/`, {
-    ...PAYLOAD_BASE,
+  const payload = {
     label: data.machine_name,
     image: data.docker_image,
     onstart: data.on_start_script,
     image_login: `-u ${env.DOCKER_USERNAME} -p ${env.DOCKER_PASSWORD} docker.io`,
-  })
-  return response.data
+
+    client_id: 'me',
+    env: { TZ: 'UTC', API_FLOWIX_KEY: btoa('tokenteste') },
+    disk: 20,
+    extra: null,
+    runtype: 'ssh',
+    python_utf8: true,
+    lang_utf8: true,
+    use_jupyter_lab: false,
+    jupyter_dir: null,
+    create_from: null,
+    force: false,
+  }
+  console.log('enviado pro vastai')
+
+  // const response = await vastAiApi.put(`/asks/${data.ask_contract_id}/`, payload)
+  // return response.data
+}
+
+async function createMachineInstance({
+  label,
+  ipv4,
+}: {
+  label: string
+  ipv4: string
+}) {
+  const payload = {
+    label,
+    ipv4,
+    provider: 'vast.ai',
+  }
+  const response = flowixApi.post('/thanos/maquinas', payload)
+  console.log(response)
 }
