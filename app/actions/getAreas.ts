@@ -19,7 +19,7 @@ interface Area {
 const query = `
 SELECT
 a.id area_id, a.nome area_nome, 
-c.id camera_id, c.nome camera_nome, c.vision_ip ip_maquina, 
+c.id camera_id, c.nome camera_nome, 
 c.status camera_status, c.created_at camera_created_at, 
 e.nome empresa_nome, u.nome unidade_nome
 FROM camera c 
@@ -42,7 +42,6 @@ export async function getDbData(): Promise<Area[]> {
         area_nome: row.area_nome,
         camera_id: row.camera_id,
         camera_nome: row.camera_nome,
-        ip_maquina: row.ip_maquina,
         camera_status: row.camera_status,
         camera_created_at: row.camera_created_at,
         empresa_nome: row.empresa_nome,
