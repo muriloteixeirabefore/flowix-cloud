@@ -43,7 +43,6 @@ import {
 } from '@/components/ui/alert-dialog'
 import { P } from '@/components/ui/p'
 import { Ul } from '@/components/ui/ul'
-import { SettingsSheet } from './settings'
 
 export default function InstancePage() {
   const { data: instances } = useQuery({
@@ -56,7 +55,6 @@ export default function InstancePage() {
     <div className="space-y-5">
       <div className="flex items-center justify-between">
         <H4>Instâncias</H4>
-        <SettingsSheet />
       </div>
       <Table>
         <TableHeader>

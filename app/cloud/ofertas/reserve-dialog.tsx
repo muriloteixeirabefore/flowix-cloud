@@ -39,6 +39,7 @@ interface ReserveDialogProps {
   qtd_cameras: number
   docker_tags?: string[]
   offer_id: string
+  public_ipaddr: string
 }
 
 const reserveFormSchema = z.object({
@@ -52,6 +53,7 @@ export function ReserveDialog({
   qtd_cameras: qtdCameras,
   docker_tags: dockerTags,
   offer_id: offerId,
+  public_ipaddr: publicIpaddr,
 }: ReserveDialogProps) {
   const router = useRouter()
   const form = useForm({
@@ -70,9 +72,11 @@ export function ReserveDialog({
       docker_image: values.docker_image,
       on_start_script: values.command,
       ask_contract_id: offerId,
+      public_ipaddr: publicIpaddr,
     }
     startVastAiMachine(payload)
       .then((response) => {
+        console.log(response)
         toast('Máquina reservada com sucesso!', {
           action: {
             label: 'Ver Instancia',
