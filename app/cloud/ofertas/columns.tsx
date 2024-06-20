@@ -93,6 +93,7 @@ export const columns: ColumnDef<OfferData>[] = [
     header: '',
     cell: ({ row }) => (
       <ReserveDialog
+        public_ipaddr={row.original.public_ipaddr}
         qtd_cameras={row.original.max_cameras}
         docker_tags={row.original.docker_tags}
         offer_id={row.original.offer_id}

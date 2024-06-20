@@ -4,6 +4,7 @@ import axios from 'axios'
 
 export const flowixApi = axios.create({
   baseURL: env.FLOWIX_API_URL,
+  headers: { 'x-api-key': env.FLOWIX_API_KEY },
   withCredentials: true,
 })
 

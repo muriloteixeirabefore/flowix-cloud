@@ -9,6 +9,7 @@ export const envSchema = z.object({
   DOCKER_PASSWORD: z.string(),
   DOCKER_USERNAME: z.string(),
   FLOWIX_API_URL: z.string().url(),
+  FLOWIX_API_KEY: z.string(),
   OPENSEARCH_URL: z.string().url(),
   VASTAI_TOKEN: z.string(),
   VASTAI_URL: z.string().url(),
