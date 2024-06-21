@@ -25,7 +25,11 @@ export async function startVastAiMachine(data: StartData) {
     image: data.docker_image,
     onstart: data.on_start_script,
     image_login: `-u ${env.DOCKER_USERNAME} -p ${env.DOCKER_PASSWORD} docker.io`,
-    env: { TZ: 'UTC', API_FLOWIX_KEY: apiResponseCreate.data.access_token },
+    env: {
+      TZ: 'UTC',
+      API_FLOWIX_KEY: apiResponseCreate.data.access_token,
+      FLOWIX_MAQUINA_ID: apiResponseCreate.data._id,
+    },
     client_id: 'me',
     disk: 20,
     extra: null,
