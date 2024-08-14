@@ -5,7 +5,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip'
-import { MonitorPlay, Settings, WebhookIcon } from 'lucide-react'
+import { MonitorPlay, Settings, WebhookIcon, LucideCamera } from 'lucide-react'
 
 export function MonitorSidebar() {
   return (
@@ -30,6 +30,16 @@ export function MonitorSidebar() {
                 </TooltipTrigger>
               </SidebarLink>
               <TooltipContent side="right">Webhook</TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <TooltipProvider>
+            <Tooltip>
+              <SidebarLink href="/monitor/cameras">
+                <TooltipTrigger asChild>
+                  <LucideCamera />
+                </TooltipTrigger>
+              </SidebarLink>
+              <TooltipContent side="right">Câmeras</TooltipContent>
             </Tooltip>
           </TooltipProvider>
         </nav>

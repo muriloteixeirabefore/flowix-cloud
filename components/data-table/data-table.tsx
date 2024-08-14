@@ -1,7 +1,11 @@
 'use client'
 
+import React from 'react'
+
 import {
+  Column,
   ColumnDef,
+  RowData,
   ColumnFiltersState,
   SortingState,
   VisibilityState,
@@ -27,6 +31,109 @@ import {
 import { useState } from 'react'
 import { DataTablePagination } from './pagination'
 import { DataTableViewOptions } from './view-options'
+
+declare module '@tanstack/react-table' {
+  //allows us to define custom properties for our columns
+  interface ColumnMeta<TData extends RowData, TValue> {
+    filterVariant?: 'text' | 'range' | 'select' | 'search'
+  }
+}
+
+function Filter({ column }: { column: Column<any, unknown> }) {
+  const columnFilterValue = column.getFilterValue()
+  const  { filterVariant } = column.columnDef.meta ?? {}
+
+  const sortedUniqueValues = React.useMemo(
+    () =>
+      filterVariant === 'select'
+      ? Array.from(column.getFacetedUniqueValues().keys())
+        .sort()
+        .slice(0, 5000)
+      : [],
+    [column.getFacetedUniqueValues(), filterVariant]
+  )
+
+  return filterVariant === 'range' ? (
+    <div>
+      <div className="flex space-x-2">
+        {/* See faceted column filters example for min max values functionality */}
+        <DebouncedInput
+          type="number"
+          value={(columnFilterValue as [number, number])?.[0] ?? ''}
+          onChange={value =>
+            column.setFilterValue((old: [number, number]) => [value, old?.[1]])
+          }
+          placeholder={`Min`}
+          className="w-24 border shadow rounded"
+        />
+        <DebouncedInput
+          type="number"
+          value={(columnFilterValue as [number, number])?.[1] ?? ''}
+          onChange={value =>
+            column.setFilterValue((old: [number, number]) => [old?.[0], value])
+          }
+          placeholder={`Max`}
+          className="w-24 border shadow rounded"
+        />
+      </div>
+      <div className="h-1" />
+    </div>
+  ) : filterVariant === 'select' ? (
+    <select
+      onChange={e => column.setFilterValue(e.target.value)}
+      value={columnFilterValue?.toString()}
+    >
+      {/* See faceted column filters example for dynamic select options */}
+      <option value="">All</option>
+      {sortedUniqueValues.map(value => (
+        //dynamically generated select options from faceted values feature
+        <option value={value} key={value}>
+          {value}
+        </option>
+      ))}
+    </select>
+  ) : filterVariant === 'search' ? (
+    <DebouncedInput
+      className="w-36 border shadow"
+      onChange={value => column.setFilterValue(value)}
+      placeholder={`Procurar...`}
+      type="text"
+      value={(columnFilterValue ?? '') as string}
+    />
+    // See faceted column filters example for datalist search suggestions
+  ) : null
+}
+
+// A typical debounced input react component
+function DebouncedInput({
+  value: initialValue,
+  onChange,
+  debounce = 500,
+  ...props
+}: {
+  value: string | number
+  onChange: (value: string | number) => void
+  debounce?: number
+} & Omit<React.InputHTMLAttributes<HTMLInputElement>, 'onChange'>) {
+  const [value, setValue] = React.useState(initialValue)
+
+  React.useEffect(() => {
+    setValue(initialValue)
+  }, [initialValue])
+
+  React.useEffect(() => {
+    const timeout = setTimeout(() => {
+      onChange(value)
+    }, debounce)
+
+    return () => clearTimeout(timeout)
+  }, [value])
+
+  return (
+    <input {...props} value={value} onChange={e => setValue(e.target.value)} />
+  )
+}
+
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -77,10 +184,23 @@ export function DataTable<TData, TValue>({
                     <TableHead key={header.id} colSpan={header.colSpan}>
                       {header.isPlaceholder
                         ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext(),
-                          )}
+                        : (
+                        <>
+                          {flexRender(
+                              header.column.columnDef.header,
+                              header.getContext(),
+                            )
+                          }
+                          {
+                            header.column.getCanFilter() ? (
+                              <div>
+                                <Filter column={header.column} />
+                              </div>
+                            ) : null
+                          }                                                  
+                        </>
+                        )
+                      }                      
                     </TableHead>
                   )
                 })}
