@@ -2,6 +2,8 @@
 
 import { vastAiApi } from '@/lib/axios'
 
+type ExtraEnv = [string, string]
+
 export async function getInstances() {
   const response = await vastAiApi.get('/instances/')
   return response.data.instances.map((instance: any) => ({
@@ -32,5 +34,14 @@ export async function getInstances() {
     ip: instance.public_ipaddr,
     location: instance.geolocation,
     status_msg: instance.status_msg,
+    flowix_maquina_id: instance.extra_env.find(
+      (extraEnv: ExtraEnv) => extraEnv[0] === 'FLOWIX_MAQUINA_ID',
+    )[1],
+    original_instance: instance,
   }))
+}
+
+export async function getInstanceDetail(instanceId: string) {
+  const response = await vastAiApi.get(`/instances/${instanceId}/`)
+  return response.data
 }
