@@ -59,7 +59,7 @@ export default function InstancePage() {
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>Nome</TableHead>
+            <TableHead>Label</TableHead>
             <TableHead>Status</TableHead>
             <TableHead>State</TableHead>
             <TableHead>GPU</TableHead>
@@ -75,14 +75,13 @@ export default function InstancePage() {
           {instances &&
             instances.map((instance: any) => (
               <TableRow key={instance.id}>
-                <TableCell>
-                  <Link href={`/instancias/${instance.id}`}>
-                    <Button
-                      variant="ghost"
-                      className="flex flex-row items-center"
-                    >
-                      {instance.label}{' '}
-                      <OpenInNewWindowIcon className="ml-2 h-4 w-4" />
+                <TableCell className="flex flex-row items-center gap-1">
+                  {instance.label}
+                  <Link
+                    href={`/cloud/maquinas/${instance.flowix_maquina_id}/${instance.id}`}
+                  >
+                    <Button variant="ghost" size={'icon'}>
+                      <OpenInNewWindowIcon className="h-4 w-4" />
                     </Button>
                   </Link>
                 </TableCell>

@@ -1,6 +1,8 @@
 'use server'
 
 import { flowixApi, vastAiApi } from '@/lib/axios'
+import { pool } from '@/lib/mysql'
+import { RowDataPacket } from 'mysql2'
 import { env } from 'process'
 
 interface StartData {
@@ -60,4 +62,23 @@ export async function startVastAiMachine(data: StartData) {
   // console.log('api_response_update', apiResponseUpdate.data)
 
   return apiResponseUpdate.data
+}
+
+export async function getCamerasMaquina(maquinaId: string) {
+  const query = `
+  SELECT c.id, c.nome, c.status, c.url
+  FROM camera c
+  JOIN maquina m on m.id = c.fk_camera_maquina 
+  WHERE c.fk_camera_maquina = ${maquinaId}
+  AND m.active is TRUE
+  AND c.deleted_at is NULL
+  AND m.deleted_at is NULL 
+  `
+  const [rows] = await pool.query<RowDataPacket[]>(query)
+  return rows.map((row) => ({
+    id: row.id,
+    nome: row.nome,
+    status: row.status,
+    url: row.url,
+  }))
 }
