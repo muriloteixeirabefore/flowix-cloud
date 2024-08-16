@@ -1,5 +1,5 @@
 import { HeaderLink } from '@/components/header-link'
-import { Cloud, Monitor, Wrench } from 'lucide-react'
+import { Cloud, Monitor } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { ThemeSwitcher } from './theme-switcher'
@@ -30,10 +30,10 @@ export function Header() {
             <Monitor className="mr-0.5 size-4" />
             <span>Monitor</span>
           </HeaderLink>
-          <HeaderLink href="/useful">
+          {/* <HeaderLink href="/useful">
             <Wrench className="mr-0.5 size-4" />
             <span>Útilitarios</span>
-          </HeaderLink>
+          </HeaderLink> */}
         </nav>
         <nav className="flex gap-2">
           <ThemeSwitcher />
