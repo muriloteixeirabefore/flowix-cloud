@@ -4,13 +4,10 @@ import { getCameras } from '@/app/actions/getCameras'
 import { H4 } from '@/components/ui/h4'
 import { useQuery } from '@tanstack/react-query'
 
-import { CameraData, columns } from '@/app/monitor/cameras/columns'
+import { CameraData, columns } from '@/app/monitor/(cameras)/columns'
 import { DataTable } from '@/components/data-table/data-table'
 
-import { useReactTable, getFilteredRowModel, getCoreRowModel } from '@tanstack/react-table'
-
-
-export default function CamerasPage() {   
+export default function CamerasPage() {
   const { data } = useQuery({
     queryKey: ['responses'],
     queryFn: () => getCameras(),
@@ -20,7 +17,8 @@ export default function CamerasPage() {
   return (
     <div className="space-y-5">
       <H4>Cameras</H4>
-      {/* <div className="flex items-center">
+      {
+        /* <div className="flex items-center">
         <div className="flex items-center space-x-2">
           <Input
             placeholder="Filter area id..."
@@ -76,8 +74,11 @@ export default function CamerasPage() {
           )}
         </div>
       </div> */
-      <DataTable<CameraData, keyof CameraData> columns={columns} data={data} />
-      }      
+        <DataTable<CameraData, keyof CameraData>
+          columns={columns}
+          data={data}
+        />
+      }
     </div>
   )
 }

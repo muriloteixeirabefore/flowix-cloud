@@ -1,7 +1,6 @@
 'use server'
 
 import { pool } from '@/lib/mysql'
-import { osClient } from '@/lib/opensearch'
 import { RowDataPacket } from 'mysql2'
 
 interface Camera {
@@ -43,7 +42,7 @@ export async function getDbData(): Promise<Camera[]> {
         camera_url: row.camera_url,
         empresa_nome: row.empresa_nome,
         unidade_nome: row.unidade_nome,
-        maquina_label: row.maquina_label
+        maquina_label: row.maquina_label,
       }
     })
   } catch (error) {
@@ -54,11 +53,11 @@ export async function getDbData(): Promise<Camera[]> {
 
 export async function getCameras() {
   const cameras = await getDbData()
-  const camerasIds = cameras.map((camera) => camera.camera_id)
+  // const camerasIds = cameras.map((camera) => camera.camera_id)
   // const hits = await getLastHits(camerasIds as number[])
 
   return cameras.map((camera) => {
-    //const hit = hits.find((hit) => hit.camera_id === area.camera_id)
+    // const hit = hits.find((hit) => hit.camera_id === area.camera_id)
     return {
       camera_id: camera.camera_id,
       camera_nome: camera.camera_nome,
