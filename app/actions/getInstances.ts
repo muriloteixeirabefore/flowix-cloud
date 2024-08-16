@@ -2,6 +2,10 @@
 
 import { vastAiApi } from '@/lib/axios'
 
+function getCamNumbers(screenCmd: string) {
+  const matchResult = screenCmd.match(/--cameras\s+(\d+)\s*&/)
+  return matchResult ? parseInt(matchResult[1]) : 1
+}
 type ExtraEnv = [string, string]
 
 export async function getInstances() {
@@ -11,6 +15,8 @@ export async function getInstances() {
     label: instance.label,
     actual_status: instance.actual_status,
     cur_state: instance.cur_state,
+    total_hour: instance.instance.totalHour,
+    num_cams: getCamNumbers(instance.onstart),
     gpu: (instance.gpu_util || 0)?.toFixed(2) + '%',
     cpu: (instance.cpu_util || 0)?.toFixed(2) + '%',
     ram:

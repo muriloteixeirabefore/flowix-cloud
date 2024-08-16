@@ -1,22 +1,24 @@
 'use client'
 
-import { getAreas } from '@/app/actions/getAreas'
-import { AreaData, columns } from '@/app/monitor/(areas)/columns'
-import { DataTable } from '@/components/data-table/data-table'
+import { getCameras } from '@/app/actions/getCameras'
 import { H4 } from '@/components/ui/h4'
 import { useQuery } from '@tanstack/react-query'
 
-export default function AreasPage() {
+import { CameraData, columns } from '@/app/monitor/(cameras)/columns'
+import { DataTable } from '@/components/data-table/data-table'
+
+export default function CamerasPage() {
   const { data } = useQuery({
     queryKey: ['responses'],
-    queryFn: () => getAreas(),
+    queryFn: () => getCameras(),
     initialData: [],
   })
 
   return (
     <div className="space-y-5">
-      <H4>Áreas</H4>
-      {/* <div className="flex items-center">
+      <H4>Cameras</H4>
+      {
+        /* <div className="flex items-center">
         <div className="flex items-center space-x-2">
           <Input
             placeholder="Filter area id..."
@@ -71,8 +73,12 @@ export default function AreasPage() {
             />
           )}
         </div>
-      </div> */}
-      <DataTable<AreaData, keyof AreaData> columns={columns} data={data} />
+      </div> */
+        <DataTable<CameraData, keyof CameraData>
+          columns={columns}
+          data={data}
+        />
+      }
     </div>
   )
 }

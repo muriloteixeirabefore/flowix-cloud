@@ -59,6 +59,8 @@ export default function InstancePage() {
       <Table>
         <TableHeader>
           <TableRow>
+            <TableHead>Nome</TableHead>
+            <TableHead>Custo Cam/Hora</TableHead>
             <TableHead>Label</TableHead>
             <TableHead>Status</TableHead>
             <TableHead>State</TableHead>
@@ -66,7 +68,9 @@ export default function InstancePage() {
             <TableHead>CPU</TableHead>
             <TableHead>RAM</TableHead>
             <TableHead>Specs</TableHead>
-            <TableHead>IP</TableHead>
+            {
+              // <TableHead>IP</TableHead>
+            }
             <TableHead>Location</TableHead>
             <TableHead>Status Message</TableHead>
           </TableRow>
@@ -85,15 +89,21 @@ export default function InstancePage() {
                     </Button>
                   </Link>
                 </TableCell>
+                <TableCell>
+                  {instance.total_hour?.toFixed(4)}/{instance.num_cams} ={' '}
+                  {((instance.total_hour || 0) / instance.num_cams)?.toFixed(4)}
+                </TableCell>
                 <TableCell>{instance.actual_status}</TableCell>
                 <TableCell>{instance.cur_state}</TableCell>
                 <TableCell>{instance.gpu}</TableCell>
                 <TableCell>{instance.cpu}</TableCell>
                 <TableCell>{instance.ram}</TableCell>
                 <TableCell>{instance.specs}</TableCell>
-                <TableCell>
-                  <div className="flex">{instance.ip}</div>
-                </TableCell>
+                {
+                  // <TableCell>
+                  //   <div className="flex">{instance.ip}</div>
+                  // </TableCell>
+                }
                 <TableCell>{instance.location}</TableCell>
                 <TableCell>{instance.status_msg}</TableCell>
                 <TableCell className="flex flex-row space-x-2">
@@ -152,17 +162,18 @@ export default function InstancePage() {
                         <AlertDialogCancel>Cancelar</AlertDialogCancel>
                         <AlertDialogAction
                           onClick={() =>
-                            deleteVastAiInstance(instance.id).then(
-                              (success) => {
-                                if (success) {
-                                  toast.success(
-                                    'Instância deletada com sucesso',
-                                  )
-                                } else {
-                                  toast.error('Falha ao deletar instância')
-                                }
-                              },
-                            )
+                            deleteVastAiInstance(
+                              instance.id,
+                              instance.label,
+                            ).then((success) => {
+                              if (success) {
+                                toast.success(
+                                  'Instância deletada e câmeras liberadas com sucesso',
+                                )
+                              } else {
+                                toast.error('Falha ao deletar instância')
+                              }
+                            })
                           }
                         >
                           Deletar {instance.label}
