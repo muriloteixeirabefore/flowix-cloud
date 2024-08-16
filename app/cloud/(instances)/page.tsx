@@ -14,9 +14,8 @@ import {
 } from '@/components/ui/table'
 import {
   FileTextIcon,
-  LinkBreak1Icon,
   OpenInNewWindowIcon,
-  TrashIcon
+  TrashIcon,
 } from '@radix-ui/react-icons'
 
 import { useQuery } from '@tanstack/react-query'
@@ -55,13 +54,14 @@ export default function InstancePage() {
   return (
     <div className="space-y-5">
       <div className="flex items-center justify-between">
-        <H4>Instâncias</H4>        
+        <H4>Instâncias</H4>
       </div>
       <Table>
         <TableHeader>
           <TableRow>
             <TableHead>Nome</TableHead>
             <TableHead>Custo Cam/Hora</TableHead>
+            <TableHead>Label</TableHead>
             <TableHead>Status</TableHead>
             <TableHead>State</TableHead>
             <TableHead>GPU</TableHead>
@@ -69,7 +69,7 @@ export default function InstancePage() {
             <TableHead>RAM</TableHead>
             <TableHead>Specs</TableHead>
             {
-              //<TableHead>IP</TableHead>
+              // <TableHead>IP</TableHead>
             }
             <TableHead>Location</TableHead>
             <TableHead>Status Message</TableHead>
@@ -79,18 +79,20 @@ export default function InstancePage() {
           {instances &&
             instances.map((instance: any) => (
               <TableRow key={instance.id}>
-                <TableCell>
-                  <Link href={`/instancias/${instance.id}`}>
-                    <Button
-                      variant="ghost"
-                      className="flex flex-row items-center"
-                    >
-                      {instance.label}{' '}
-                      <OpenInNewWindowIcon className="ml-2 h-4 w-4" />
+                <TableCell className="flex flex-row items-center gap-1">
+                  {instance.label}
+                  <Link
+                    href={`/cloud/maquinas/${instance.flowix_maquina_id}/${instance.id}`}
+                  >
+                    <Button variant="ghost" size={'icon'}>
+                      <OpenInNewWindowIcon className="h-4 w-4" />
                     </Button>
                   </Link>
                 </TableCell>
-                <TableCell>{instance.total_hour?.toFixed(4)}/{instance.num_cams} = {((instance.total_hour || 0)/(instance.num_cams))?.toFixed(4)}</TableCell>                
+                <TableCell>
+                  {instance.total_hour?.toFixed(4)}/{instance.num_cams} ={' '}
+                  {((instance.total_hour || 0) / instance.num_cams)?.toFixed(4)}
+                </TableCell>
                 <TableCell>{instance.actual_status}</TableCell>
                 <TableCell>{instance.cur_state}</TableCell>
                 <TableCell>{instance.gpu}</TableCell>
@@ -98,9 +100,9 @@ export default function InstancePage() {
                 <TableCell>{instance.ram}</TableCell>
                 <TableCell>{instance.specs}</TableCell>
                 {
-                // <TableCell>
-                //   <div className="flex">{instance.ip}</div>
-                // </TableCell>
+                  // <TableCell>
+                  //   <div className="flex">{instance.ip}</div>
+                  // </TableCell>
                 }
                 <TableCell>{instance.location}</TableCell>
                 <TableCell>{instance.status_msg}</TableCell>
@@ -160,17 +162,18 @@ export default function InstancePage() {
                         <AlertDialogCancel>Cancelar</AlertDialogCancel>
                         <AlertDialogAction
                           onClick={() =>
-                            deleteVastAiInstance(instance.id, instance.label).then(
-                              (success) => {
-                                if (success) {
-                                  toast.success(
-                                    'Instância deletada e câmeras liberadas com sucesso',
-                                  )
-                                } else {
-                                  toast.error('Falha ao deletar instância')
-                                }
-                              },
-                            )
+                            deleteVastAiInstance(
+                              instance.id,
+                              instance.label,
+                            ).then((success) => {
+                              if (success) {
+                                toast.success(
+                                  'Instância deletada e câmeras liberadas com sucesso',
+                                )
+                              } else {
+                                toast.error('Falha ao deletar instância')
+                              }
+                            })
                           }
                         >
                           Deletar {instance.label}
